@@ -23,12 +23,9 @@ SOFTWARE.
 */
 
 
+using NodaTime;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using NodaTime;
 
 namespace Point85.ShiftSharp.Schedule
 {

@@ -46,7 +46,7 @@ namespace Point85.ShiftSharp.Schedule
 		{
 		}
 
-		Shift(String name, String description, LocalTime start, Duration duration) : base(name, description, start, duration)
+		internal Shift(String name, String description, LocalTime start, Duration duration) : base(name, description, start, duration)
 		{
 		}
 
@@ -314,7 +314,7 @@ namespace Point85.ShiftSharp.Schedule
 			return workSchedule;
 		}
 
-		void SetWorkSchedule(WorkSchedule workSchedule)
+		internal void SetWorkSchedule(WorkSchedule workSchedule)
 		{
 			this.workSchedule = workSchedule;
 		}

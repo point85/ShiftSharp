@@ -22,13 +22,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using NodaTime;
+using System;
 
 namespace Point85.ShiftSharp.Schedule
 {
@@ -51,7 +46,7 @@ namespace Point85.ShiftSharp.Schedule
 		{
 		}
 
-		NonWorkingPeriod(string name, string description, LocalDateTime startDateTime, Duration duration) : base(name, description)
+		internal NonWorkingPeriod(string name, string description, LocalDateTime startDateTime, Duration duration) : base(name, description)
 		{
 			SetStartDateTime(startDateTime);
 			SetDuration(duration);
@@ -153,7 +148,7 @@ namespace Point85.ShiftSharp.Schedule
 			return workSchedule;
 		}
 
-		void SetWorkSchedule(WorkSchedule workSchedule)
+		internal void SetWorkSchedule(WorkSchedule workSchedule)
 		{
 			this.workSchedule = workSchedule;
 		}
