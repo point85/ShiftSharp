@@ -33,7 +33,7 @@ namespace Point85.ShiftSharp.Schedule
 	internal class DayOff : TimePeriod
 	{
 		// Construct a period of time when not working
-		DayOff(string name, string description, LocalTime start, Duration duration) : base(name, description, start, duration)
+		internal DayOff(string name, string description, LocalTime start, Duration duration) : base(name, description, start, duration)
 		{
 		}
 

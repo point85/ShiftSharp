@@ -112,6 +112,11 @@ namespace Point85.ShiftSharp.Schedule
 		// breaks are considered to be in the shift's working period
 		abstract public bool IsWorkingPeriod();
 
+		protected int SecondOfDay(LocalTime time)
+		{
+			return (int)(time.NanosecondOfDay / 1E+09);
+		}
+
 		/**
 		 * Build a string value for this period
 		 */
