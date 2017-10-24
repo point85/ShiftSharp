@@ -39,7 +39,7 @@ namespace Point85.ShiftSharp.Schedule
 		private const string MESSAGE_RESOURCE_NAME = "./Resources/Message.properties";
 
 		// resource manager for exception messages
-		internal static PropertyManager MessagesManager;
+		internal static PropertyManager MessagesManager = new PropertyManager(MESSAGE_RESOURCE_NAME);
 
 		// cached time zone for working time calculations
 		private DateTimeZone ZONE_ID = DateTimeZone.Utc;
@@ -53,6 +53,10 @@ namespace Point85.ShiftSharp.Schedule
 		// holidays and planned downtime
 		private List<NonWorkingPeriod> nonWorkingPeriods = new List<NonWorkingPeriod>();
 
+		public WorkSchedule() : base()
+		{
+		}
+
 		/**
 		 * Construct a work schedule
 		 * 
@@ -65,8 +69,6 @@ namespace Point85.ShiftSharp.Schedule
 		 */
 		public WorkSchedule(string name, string description) : base(name, description)
 		{
-			// localizable string managers
-			MessagesManager = new PropertyManager(MESSAGE_RESOURCE_NAME);
 		}
 
 		/// <summary>
