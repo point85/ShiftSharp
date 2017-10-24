@@ -38,9 +38,6 @@ namespace Point85.ShiftSharp.Schedule
 		// description
 		private string description;
 
-		// database primary key
-		private int primaryKey;
-
 		protected Named()
 		{
 

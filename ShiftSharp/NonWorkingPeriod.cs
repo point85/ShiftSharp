@@ -81,7 +81,7 @@ namespace Point85.ShiftSharp.Schedule
 		/// <returns>Period end</returns>
 		public LocalDateTime GetEndDateTime()
 		{
-			return startDateTime.PlusSeconds(duration.Seconds);
+			return startDateTime.PlusSeconds((long)duration.TotalSeconds);
 		}
 
 		/// <summary>
@@ -99,7 +99,7 @@ namespace Point85.ShiftSharp.Schedule
 		/// <param name="duration">Duration</param>
 		public void SetDuration(Duration duration)
 		{
-			if (duration == null || duration.Seconds == 0)
+			if (duration == null || duration.TotalSeconds == 0)
 			{
 				throw new Exception(WorkSchedule.GetMessage("duration.not.defined"));
 			}

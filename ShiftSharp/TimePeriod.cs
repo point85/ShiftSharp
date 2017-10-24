@@ -66,12 +66,12 @@ namespace Point85.ShiftSharp.Schedule
 		/// <param name="duration">Duration</param>
 		public void SetDuration(Duration duration)
 		{
-			if (duration == null || duration.Seconds == 0)
+			if (duration == null || duration.TotalSeconds == 0)
 			{
 				throw new Exception(WorkSchedule.GetMessage("duration.not.defined"));
 			}
 
-			if (duration.Seconds > SECONDS_PER_DAY)
+			if (duration.TotalSeconds > SECONDS_PER_DAY)
 			{
 				throw new Exception(WorkSchedule.GetMessage("duration.not.allowed"));
 			}
@@ -106,7 +106,7 @@ namespace Point85.ShiftSharp.Schedule
 		/// <returns>Period end time</returns>
 		public LocalTime GetEnd()
 		{
-			return startTime.PlusSeconds(duration.Seconds);
+			return startTime.PlusSeconds((long)duration.TotalSeconds);
 		}
 
 		// breaks are considered to be in the shift's working period

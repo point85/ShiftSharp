@@ -97,7 +97,7 @@ namespace Point85.ShiftSharp.Schedule
 		 */
 		public int CompareTo(ShiftInstance other)
 		{
-			throw new NotImplementedException();
+			return GetStartTime().CompareTo(other.GetStartTime());
 		}
 
 		/**
