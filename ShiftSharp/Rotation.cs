@@ -35,7 +35,7 @@ namespace Point85.ShiftSharp.Schedule
 	public class Rotation : Named, IComparable<Rotation>
 	{
 		// working periods in the rotation
-		private List<RotationSegment> rotationSegments = new List<RotationSegment>();
+		public List<RotationSegment> RotationSegments { get; private set; } = new List<RotationSegment>();
 
 		// list of working and non-working days
 		private List<TimePeriod> periods;
@@ -44,7 +44,7 @@ namespace Point85.ShiftSharp.Schedule
 		private const string DAY_OFF_NAME = "DAY_OFF";
 
 		// 24-hour day off period
-		private static DayOff DAY_OFF;// = InitializeDayOff();
+		private static DayOff DAY_OFF;
 
 		static Rotation()
 		{
@@ -94,21 +94,21 @@ namespace Point85.ShiftSharp.Schedule
 				periods = new List<TimePeriod>();
 
 				// sort by sequence number
-				rotationSegments.Sort();
+				RotationSegments.Sort();
 
-				foreach (RotationSegment segment in rotationSegments)
+				foreach (RotationSegment segment in RotationSegments)
 				{
 					// add the on days
-					if (segment.GetStartingShift() != null)
+					if (segment.StartingShift != null)
 					{
-						for (int i = 0; i < segment.GetDaysOn(); i++)
+						for (int i = 0; i < segment.DaysOn; i++)
 						{
-							periods.Add(segment.GetStartingShift());
+							periods.Add(segment.StartingShift);
 						}
 					}
 
 					// add the off days
-					for (int i = 0; i < segment.GetDaysOff(); i++)
+					for (int i = 0; i < segment.DaysOff; i++)
 					{
 						periods.Add(Rotation.DAY_OFF);
 					}
@@ -159,16 +159,6 @@ namespace Point85.ShiftSharp.Schedule
 		}
 
 		/**
-		 * Get the rotation's working periods
-		 * 
-		 * @return List of {@link RotationSegment}
-		 */
-		public List<RotationSegment> GetRotationSegments()
-		{
-			return rotationSegments;
-		}
-
-		/**
 		 * Add a working period to this rotation. A working period starts with a
 		 * shift and specifies the number of days on and days off
 		 * 
@@ -189,14 +179,14 @@ namespace Point85.ShiftSharp.Schedule
 				throw new Exception("The starting shift must be specified.");
 			}
 			RotationSegment segment = new RotationSegment(startingShift, daysOn, daysOff, this);
-			rotationSegments.Add(segment);
-			segment.SetSequence(rotationSegments.Count);
+			RotationSegments.Add(segment);
+			segment.Sequence = RotationSegments.Count;
 			return segment;
 		}
 
 		public int CompareTo(Rotation other)
 		{
-			return GetName().CompareTo(other.GetName());
+			return Name.CompareTo(other.Name);
 		}
 
 		/**
@@ -222,7 +212,7 @@ namespace Point85.ShiftSharp.Schedule
 				}
 
 				string onOff = period.IsWorkingPeriod() ? on : off;
-				periodsString += period.GetName() + " (" + onOff + ")";
+				periodsString += period.Name + " (" + onOff + ")";
 			}
 
 			string text = named + "\n" + rper + ": [" + periodsString + "], " + rd + ": " + GetDuration() + ", " + rda

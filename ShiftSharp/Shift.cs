@@ -34,10 +34,10 @@ namespace Point85.ShiftSharp.Schedule
 	public class Shift : TimePeriod, IComparable<Shift>
 	{
 		// owning work schedule
-		private WorkSchedule workSchedule;
+		public WorkSchedule WorkSchedule { get; internal set; }
 
 		// breaks
-		private List<Break> breaks = new List<Break>();
+		public List<Break> Breaks { get; private set; } = new List<Break>();
 
 		/**
 		 * Default constructor
@@ -51,16 +51,6 @@ namespace Point85.ShiftSharp.Schedule
 		}
 
 		/**
-		 * Get the break periods for this shift
-		 * 
-		 * @return List {@link Break}
-		 */
-		public List<Break> GetBreaks()
-		{
-			return this.breaks;
-		}
-
-		/**
 		 * Add a break period to this shift
 		 * 
 		 * @param breakPeriod
@@ -68,9 +58,9 @@ namespace Point85.ShiftSharp.Schedule
 		 */
 		public void AddBreak(Break breakPeriod)
 		{
-			if (!this.breaks.Contains(breakPeriod))
+			if (!this.Breaks.Contains(breakPeriod))
 			{
-				this.breaks.Add(breakPeriod);
+				this.Breaks.Add(breakPeriod);
 			}
 		}
 
@@ -82,9 +72,9 @@ namespace Point85.ShiftSharp.Schedule
 		 */
 		public void RemoveBreak(Break breakPeriod)
 		{
-			if (this.breaks.Contains(breakPeriod))
+			if (this.Breaks.Contains(breakPeriod))
 			{
-				this.breaks.Remove(breakPeriod);
+				this.Breaks.Remove(breakPeriod);
 			}
 		}
 
@@ -138,7 +128,7 @@ namespace Point85.ShiftSharp.Schedule
 		{
 			if (SpansMidnight())
 			{
-				String msg = String.Format(WorkSchedule.GetMessage("shift.spans.midnight"), GetName(), from, to);
+				String msg = String.Format(WorkSchedule.GetMessage("shift.spans.midnight"), Name, from, to);
 				throw new Exception(msg);
 			}
 
@@ -293,7 +283,7 @@ namespace Point85.ShiftSharp.Schedule
 		{
 			Duration sum = Duration.Zero;
 
-			List<Break> breaks = this.GetBreaks();
+			List<Break> breaks = this.Breaks;
 
 			foreach (Break b in breaks)
 			{
@@ -304,26 +294,11 @@ namespace Point85.ShiftSharp.Schedule
 		}
 
 		/**
-		 * Get the work schedule that owns this shift
-		 * 
-		 * @return {@link WorkSchedule}
-		 */
-		public WorkSchedule GetWorkSchedule()
-		{
-			return workSchedule;
-		}
-
-		internal void SetWorkSchedule(WorkSchedule workSchedule)
-		{
-			this.workSchedule = workSchedule;
-		}
-
-		/**
 		 * Compare one shift to another one
 		 */
 		public int CompareTo(Shift other)
 		{
-			return this.GetName().CompareTo(other.GetName());
+			return this.Name.CompareTo(other.Name);
 		}
 
 		/**
@@ -335,12 +310,12 @@ namespace Point85.ShiftSharp.Schedule
 		{
 			string text = base.ToString();
 
-			if (GetBreaks().Count > 0)
+			if (Breaks.Count > 0)
 			{
-				text += "\n      " + GetBreaks().Count + " " + WorkSchedule.GetMessage("breaks") + ":";
+				text += "\n      " + Breaks.Count + " " + WorkSchedule.GetMessage("breaks") + ":";
 			}
 
-			foreach (Break breakPeriod in GetBreaks())
+			foreach (Break breakPeriod in Breaks)
 			{
 				text += "\n      " + breakPeriod.ToString();
 			}

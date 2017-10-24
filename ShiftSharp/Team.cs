@@ -268,7 +268,7 @@ namespace Point85.ShiftSharp.Schedule
 
 			if (yesterdayInstance != null)
 			{
-				lastShift = yesterdayInstance.GetShift();
+				lastShift = yesterdayInstance.Shift;
 			}
 
 			// step through each day until done
@@ -300,7 +300,7 @@ namespace Point85.ShiftSharp.Schedule
 
 				if (instance != null)
 				{
-					lastShift = instance.GetShift();
+					lastShift = instance.Shift;
 					// check for last date
 					if (thisDate.CompareTo(toDate) == 0)
 					{
@@ -358,7 +358,7 @@ namespace Point85.ShiftSharp.Schedule
 		 */
 		public int CompareTo(Team other)
 		{
-			return this.GetName().CompareTo(other.GetName());
+			return Name.CompareTo(other.Name);
 		}
 
 		/**

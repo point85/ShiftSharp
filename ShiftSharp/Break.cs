@@ -34,7 +34,6 @@ namespace Point85.ShiftSharp.Schedule
 	{
 		public Break(string name, string description, LocalTime start, Duration duration) : base(name, description, start, duration)
 		{
-
 		}
 
 		public override bool IsWorkingPeriod()

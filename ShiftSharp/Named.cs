@@ -33,10 +33,10 @@ namespace Point85.ShiftSharp.Schedule
 	public abstract class Named
 	{
 		// name
-		private string name;
+		public string Name { get; set; }
 
 		// description
-		private string description;
+		public string Description { get; set; }
 
 		protected Named()
 		{
@@ -45,48 +45,8 @@ namespace Point85.ShiftSharp.Schedule
 
 		protected Named(string name, string description)
 		{
-			SetName(name);
-			SetDescription(description);
-		}
-
-		/// <summary>
-		/// Get name
-		/// </summary>
-		/// <returns>Name</returns>
-		public string GetName()
-		{
-			return name;
-		}
-
-		/// <summary>
-		/// Set name
-		/// </summary>
-		/// <param name="name">Name</param>
-		public void SetName(string name)
-		{
-			if (name == null)
-			{
-				throw new Exception(WorkSchedule.GetMessage("name.not.defined"));
-			}
-			this.name = name;
-		}
-
-		/// <summary>
-		/// Get description
-		/// </summary>
-		/// <returns>Description</returns>
-		public string GetDescription()
-		{
-			return description;
-		}
-
-		/// <summary>
-		/// Set description
-		/// </summary>
-		/// <param name="description"> Description</param>
-		public void SetDescription(string description)
-		{
-			this.description = description;
+			Name = name ?? throw new Exception(WorkSchedule.GetMessage("name.not.defined"));
+			Description = description;
 		}
 
 		/// <summary>
@@ -96,13 +56,12 @@ namespace Point85.ShiftSharp.Schedule
 		/// <returns>True if equal</returns>
 		public override bool Equals(Object other)
 		{
-
-			if (other == null || GetType() != other.GetType())
+			if (Name == null || other == null || GetType() != other.GetType())
 			{
 				return false;
 			}
 
-			return GetName().Equals(((Named)other).GetName());
+			return Name.Equals(((Named)other).Name);
 		}
 
 		/// <summary>
@@ -111,7 +70,7 @@ namespace Point85.ShiftSharp.Schedule
 		/// <returns>Hash code</returns>
 		public override int GetHashCode()
 		{
-			return GetName().GetHashCode();
+			return Name.GetHashCode();
 		}
 
 		/// <summary>
@@ -120,7 +79,7 @@ namespace Point85.ShiftSharp.Schedule
 		/// <returns>String value</returns>
 		public override string ToString()
 		{
-			return GetName() + " (" + GetDescription() + ")";
+			return Name + " (" + Description + ")";
 		}
 	}
 }

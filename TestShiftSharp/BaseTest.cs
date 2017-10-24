@@ -64,11 +64,11 @@ namespace TestShiftSharp
 				LocalTime start = shift.GetStart();
 				LocalTime end = shift.GetEnd();
 
-				Assert.IsTrue(shift.GetName().Length > 0);
-				Assert.IsTrue(shift.GetDescription().Length > 0);
+				Assert.IsTrue(shift.Name.Length > 0);
+				Assert.IsTrue(shift.Description.Length > 0);
 
 				Assert.IsTrue(total.TotalMinutes > 0);
-				Assert.IsTrue(shift.GetBreaks() != null);
+				Assert.IsTrue(shift.Breaks != null);
 				Assert.IsTrue(start != null);
 				Assert.IsTrue(end != null);
 
@@ -157,8 +157,8 @@ namespace TestShiftSharp
 
 			foreach (Team team in ws.GetTeams())
 			{
-				Assert.IsTrue(team.GetName().Length > 0);
-				Assert.IsTrue(team.GetDescription().Length > 0);
+				Assert.IsTrue(team.Name.Length > 0);
+				Assert.IsTrue(team.Description.Length > 0);
 				Assert.IsTrue(team.GetDayInRotation(team.GetRotationStart()) == 1);
 				Duration hours = team.GetRotation().GetWorkingTime();
 				Assert.IsTrue(hours.Equals(hoursPerRotation));
@@ -192,19 +192,19 @@ namespace TestShiftSharp
 
 				foreach (ShiftInstance instance in instances)
 				{
-					int isBefore = instance.GetStartTime().CompareTo(instance.GetEndTime());
+					int isBefore = instance.StartDateTime.CompareTo(instance.GetEndTime());
 					Assert.IsTrue(isBefore < 0);
-					Assert.IsTrue(instance.GetShift() != null);
-					Assert.IsTrue(instance.GetTeam() != null);
+					Assert.IsTrue(instance.Shift != null);
+					Assert.IsTrue(instance.Team != null);
 
-					Shift shift = instance.GetShift();
+					Shift shift = instance.Shift;
 					LocalTime startTime = shift.GetStart();
 					LocalTime endTime = shift.GetEnd();
 
 					Assert.IsTrue(shift.IsInShift(startTime));
 					Assert.IsTrue(shift.IsInShift(startTime.PlusSeconds(1)));
 
-					Duration shiftDuration = instance.GetShift().GetDuration();
+					Duration shiftDuration = instance.Shift.GetDuration();
 
 					// midnight is special case
 					if (!shiftDuration.Equals(Duration.FromHours(24)))
@@ -232,7 +232,7 @@ namespace TestShiftSharp
 					{
 						if (!shiftDuration.Equals(Duration.FromHours(24)))
 						{
-							Assert.IsFalse(shift.GetName().Equals(si.GetShift().GetName()));
+							Assert.IsFalse(shift.Name.Equals(si.Shift.Name));
 						}
 					}
 
@@ -248,7 +248,7 @@ namespace TestShiftSharp
 					{
 						if (!shiftDuration.Equals(Duration.FromHours(24)))
 						{
-							Assert.IsFalse(shift.GetName().Equals(si.GetShift().GetName()));
+							Assert.IsFalse(shift.Name.Equals(si.Shift.Name));
 						}
 					}
 				}
@@ -268,8 +268,8 @@ namespace TestShiftSharp
 				ws.PrintShiftInstances(instanceReference, instanceReference.PlusDays(rotationDays.Days));
 			}
 
-			Assert.IsTrue(ws.GetName().Length > 0);
-			Assert.IsTrue(ws.GetDescription().Length > 0);
+			Assert.IsTrue(ws.Name.Length > 0);
+			Assert.IsTrue(ws.Description.Length > 0);
 			Assert.IsTrue(ws.GetNonWorkingPeriods() != null);
 
 			// shifts

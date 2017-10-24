@@ -36,129 +36,36 @@ namespace Point85.ShiftSharp.Schedule
 	/// </summary>
 	public class RotationSegment : IComparable<RotationSegment>
 	{
-		// parent rotation
-		private Rotation rotation;
+		/// <summary>
+		/// parent rotation
+		/// </summary>
+		public Rotation Rotation { get; private set; }
 
 		// strict ordering
-		private int sequence = 0;
+		public int Sequence { get; set; } = 0;
 
 		// shift that starts this segment
-		private Shift startingShift;
+		public Shift StartingShift { get; set; }
 
 		// number of days on
-		private int daysOn = 0;
+		public int DaysOn { get; set; } = 0;
 
 		// number of days off
-		private int daysOff = 0;
+		public int DaysOff { get; set; } = 0;
 
 		/**
 		 * Constructor
 		 */
 		public RotationSegment()
 		{
-
 		}
 
 		internal RotationSegment(Shift startingShift, int daysOn, int daysOff, Rotation rotation)
 		{
-			this.startingShift = startingShift;
-			this.daysOn = daysOn;
-			this.daysOff = daysOff;
-			this.rotation = rotation;
-		}
-
-		/**
-		 * Get the starting shift
-		 * 
-		 * @return {@link Shift}
-		 */
-		public Shift GetStartingShift()
-		{
-			return startingShift;
-		}
-
-		/**
-		 * Set the starting shift
-		 * 
-		 * @param startingShift
-		 *            {@link Shift}
-		 */
-		public void SetStartingShift(Shift startingShift)
-		{
-			this.startingShift = startingShift;
-		}
-
-		/**
-		 * Get the number of days on shift
-		 * 
-		 * @return Day count
-		 */
-		public int GetDaysOn()
-		{
-			return daysOn;
-		}
-
-		/**
-		 * Set the number of days on shift
-		 * 
-		 * @param daysOn
-		 *            Day count
-		 */
-		public void SetDaysOn(int daysOn)
-		{
-			this.daysOn = daysOn;
-		}
-
-		/**
-		 * Get the number of days off shift
-		 * 
-		 * @return Day count
-		 */
-		public int GetDaysOff()
-		{
-			return daysOff;
-		}
-
-		/**
-		 * Set the number of days off shift
-		 * 
-		 * @param daysOff
-		 *            Day count
-		 */
-		public void SetDaysOff(int daysOff)
-		{
-			this.daysOff = daysOff;
-		}
-
-		/**
-		 * Get the rotation for this segment
-		 * 
-		 * @return {@link Rotation}
-		 */
-		public Rotation GetRotation()
-		{
-			return rotation;
-		}
-
-		/**
-		 * Get the sequence in the rotation
-		 * 
-		 * @return Sequence
-		 */
-		public int GetSequence()
-		{
-			return sequence;
-		}
-
-		/**
-		 * Get the sequence in the rotation
-		 * 
-		 * @param sequence
-		 *            Sequence
-		 */
-		public void SetSequence(int sequence)
-		{
-			this.sequence = sequence;
+			this.StartingShift = startingShift;
+			this.DaysOn = daysOn;
+			this.DaysOff = daysOff;
+			this.Rotation = rotation;
 		}
 
 		/**
@@ -168,14 +75,14 @@ namespace Point85.ShiftSharp.Schedule
 		 *            rotation segment
 		 * @return -1 if less than, 0 if equal and 1 if greater than
 		 */
-	public int CompareTo(RotationSegment other)
+		public int CompareTo(RotationSegment other)
 		{
 			int value = 0;
-			if (this.GetSequence() < other.GetSequence())
+			if (this.Sequence < other.Sequence)
 			{
 				value = -1;
 			}
-			else if (this.GetSequence() > other.GetSequence())
+			else if (this.Sequence > other.Sequence)
 			{
 				value = 1;
 			}

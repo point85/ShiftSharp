@@ -151,15 +151,15 @@ namespace TestShiftSharp
 
 			List<ShiftInstance> instances = schedule.GetShiftInstancesForDay(new LocalDate(2017, 3, 1));
 			Assert.IsTrue(instances.Count == 1);
-			Assert.IsTrue(instances[0].GetTeam().Equals(platoon3));
+			Assert.IsTrue(instances[0].Team.Equals(platoon3));
 
 			instances = schedule.GetShiftInstancesForDay(new LocalDate(2017, 3, 3));
 			Assert.IsTrue(instances.Count == 1);
-			Assert.IsTrue(instances[0].GetTeam().Equals(platoon1));
+			Assert.IsTrue(instances[0].Team.Equals(platoon1));
 
 			instances = schedule.GetShiftInstancesForDay(new LocalDate(2017, 3, 9));
 			Assert.IsTrue(instances.Count == 1);
-			Assert.IsTrue(instances[0].GetTeam().Equals(platoon2));
+			Assert.IsTrue(instances[0].Team.Equals(platoon2));
 
 			runBaseTest(schedule, Duration.FromHours(144), Duration.FromDays(18), new LocalDate(2017, 2, 1));
 		}
@@ -198,15 +198,6 @@ namespace TestShiftSharp
 		{
 			// regular work week with holidays and breaks
 			schedule = new WorkSchedule("Regular 40 hour work week", "9 to 5");
-
-			try
-			{
-				schedule.SetName(null);
-				Assert.Fail();
-			}
-			catch (Exception)
-			{
-			}
 
 			// holidays
 			NonWorkingPeriod memorialDay = schedule.CreateNonWorkingPeriod("MEMORIAL DAY", "Memorial day", new LocalDateTime(2016, 5, 30, 0, 0, 0),
@@ -304,27 +295,27 @@ namespace TestShiftSharp
 			WorkSchedule schedule2 = new WorkSchedule();
 
 			Shift shift3 = new Shift();
-			shift3.SetName("Shift3");
-			Assert.IsTrue(shift3.GetWorkSchedule() == null);
+			shift3.Name = "Shift3";
+			Assert.IsTrue(shift3.WorkSchedule == null);
 			Assert.IsTrue(shift3.CompareTo(shift3) == 0);
 
 			Team team3 = new Team();
 			Assert.IsTrue(team3.GetWorkSchedule() == null);
 
 			RotationSegment segment = new RotationSegment();
-			segment.SetSequence(1);
-			segment.SetStartingShift(shift2);
-			segment.SetDaysOn(5);
-			segment.SetDaysOff(2);
-			Assert.IsTrue(segment.GetRotation() == null);
+			segment.Sequence = 1;
+			segment.StartingShift = shift2;
+			segment.DaysOn = 5;
+			segment.DaysOff = 2;
+			Assert.IsTrue(segment.Rotation == null);
 
 			Rotation rotation3 = new Rotation();
-			rotation3.SetName("Rotation3");
+			rotation3.Name = "Rotation3";
 			Assert.IsTrue(rotation3.CompareTo(rotation3) == 0);
-			Assert.IsTrue(rotation3.GetRotationSegments().Count == 0);
+			Assert.IsTrue(rotation3.RotationSegments.Count == 0);
 
 			NonWorkingPeriod nwp = new NonWorkingPeriod();
-			Assert.IsTrue(nwp.GetWorkSchedule() == null);
+			Assert.IsTrue(nwp.WorkSchedule == null);
 
 
 			Assert.IsTrue(team1.GetWorkSchedule().Equals(schedule));
@@ -355,7 +346,7 @@ namespace TestShiftSharp
 
 			try
 			{
-				period.SetDuration(Duration.FromSeconds(0));
+				period.Duration = Duration.FromSeconds(0);
 				Assert.Fail();
 			}
 			catch (Exception)
@@ -488,8 +479,8 @@ namespace TestShiftSharp
 
 			// ok to delete
 			WorkSchedule schedule2 = new WorkSchedule("Exceptions2", "Test exceptions2");
-			schedule2.SetName("Schedule 2");
-			schedule2.SetDescription("a description");
+			schedule2.Name = "Schedule 2";
+			schedule2.Description = "a description";
 
 			schedule2.DeleteShift(shift);
 			schedule2.DeleteTeam(team);
@@ -509,7 +500,7 @@ namespace TestShiftSharp
 
 			// hashcode()
 			team.GetHashCode();
-			String name = team.GetName();
+			String name = team.Name;
 			Dictionary<String, Team> teams = new Dictionary<String, Team>();
 			teams[name] = team;
 			Team t = teams[name];

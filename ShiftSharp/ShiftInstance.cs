@@ -33,39 +33,19 @@ namespace Point85.ShiftSharp.Schedule
 	public class ShiftInstance : IComparable<ShiftInstance>
 	{
 		// definition of the shift
-		private Shift shift;
+		public Shift Shift { get; private set; }
 
 		// team working it
-		private Team team;
+		public Team Team { get; private set; }
 
 		// start date and time of day
-		private LocalDateTime startDateTime;
+		public LocalDateTime StartDateTime { get; private set; }
 
 		internal ShiftInstance(Shift shift, LocalDateTime startDateTime, Team team)
 		{
-			this.shift = shift;
-			this.startDateTime = startDateTime;
-			this.team = team;
-		}
-
-		/**
-		 * Get the shift for this instance
-		 * 
-		 * @return {@link Shift}
-		 */
-		public Shift GetShift()
-		{
-			return shift;
-		}
-
-		/**
-		 * Get the starting date and time of day
-		 * 
-		 * @return LocalDateTime
-		 */
-		public LocalDateTime GetStartTime()
-		{
-			return startDateTime;
+			this.Shift = shift;
+			this.StartDateTime = startDateTime;
+			this.Team = team;
 		}
 
 		/**
@@ -75,18 +55,8 @@ namespace Point85.ShiftSharp.Schedule
 		 */
 		public LocalDateTime GetEndTime()
 		{
-			Duration duration = shift.GetDuration();
-			return startDateTime.PlusSeconds((long)duration.TotalSeconds);
-		}
-
-		/**
-		 * Get the team
-		 * 
-		 * @return {@link Team}
-		 */
-		public Team GetTeam()
-		{
-			return team;
+			Duration duration = Shift.GetDuration();
+			return StartDateTime.PlusSeconds((long)duration.TotalSeconds);
 		}
 
 		/**
@@ -97,7 +67,7 @@ namespace Point85.ShiftSharp.Schedule
 		 */
 		public int CompareTo(ShiftInstance other)
 		{
-			return GetStartTime().CompareTo(other.GetStartTime());
+			return StartDateTime.CompareTo(other.StartDateTime);
 		}
 
 		/**
@@ -110,10 +80,9 @@ namespace Point85.ShiftSharp.Schedule
 			string ps = WorkSchedule.GetMessage("period.start");
 			string pe = WorkSchedule.GetMessage("period.end");
 
-			string text = " " + t + ": " + GetTeam().GetName() + ", " + s + ": " + GetShift().GetName() + ", " + ps + ": "
-					+ GetStartTime() + ", " + pe + ": " + GetEndTime();
+			string text = " " + t + ": " + Team.Name + ", " + s + ": " + Shift.Name + ", " + ps + ": "
+					+ StartDateTime + ", " + pe + ": " + GetEndTime();
 			return text;
 		}
-
 	}
 }

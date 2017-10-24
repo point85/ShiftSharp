@@ -158,7 +158,7 @@ namespace Point85.ShiftSharp.Schedule
 				// check to see if this is a non-working day
 				bool addShift = true;
 
-				LocalDate startDate = instance.GetStartTime().Date;
+				LocalDate startDate = instance.StartDateTime.Date;
 
 				foreach (NonWorkingPeriod nonWorkingPeriod in nonWorkingPeriods)
 				{
@@ -199,7 +199,7 @@ namespace Point85.ShiftSharp.Schedule
 			// check time now
 			foreach (ShiftInstance instance in candidateShifts)
 			{
-				if (instance.GetShift().IsInShift(dateTime.TimeOfDay))
+				if (instance.Shift.IsInShift(dateTime.TimeOfDay))
 				{
 					workingShifts.Add(instance);
 				}
@@ -262,7 +262,7 @@ namespace Point85.ShiftSharp.Schedule
 				throw new Exception(msg);
 			}
 			shifts.Add(shift);
-			shift.SetWorkSchedule(this);
+			shift.WorkSchedule = this;
 			return shift;
 		}
 
@@ -292,7 +292,7 @@ namespace Point85.ShiftSharp.Schedule
 					{
 						if (period.Equals(inUseShift))
 						{
-							string msg = String.Format(WorkSchedule.GetMessage("shift.in.use"), shift.GetName());
+							string msg = String.Format(WorkSchedule.GetMessage("shift.in.use"), shift.Name);
 							throw new Exception(msg);
 						}
 					}
@@ -327,7 +327,7 @@ namespace Point85.ShiftSharp.Schedule
 				string msg = String.Format(WorkSchedule.GetMessage("nonworking.period.already.exists"), name);
 				throw new Exception(msg);
 			}
-			period.SetWorkSchedule(this);
+			period.WorkSchedule = this;
 			nonWorkingPeriods.Add(period);
 
 			nonWorkingPeriods.Sort();
@@ -427,7 +427,7 @@ namespace Point85.ShiftSharp.Schedule
 
 			foreach (NonWorkingPeriod period in GetNonWorkingPeriods())
 			{
-				LocalDateTime start = period.GetStartDateTime();
+				LocalDateTime start = period.StartDateTime;
 
 				Instant startInstant = start.InZoneStrictly(ZONE_ID).ToInstant();
 				long startSeconds = startInstant.ToUnixTimeSeconds();
@@ -582,7 +582,7 @@ namespace Point85.ShiftSharp.Schedule
 					count = 1;
 					foreach (NonWorkingPeriod period in periods)
 					{
-						totalMinutes = totalMinutes.Plus(period.GetDuration());
+						totalMinutes = totalMinutes.Plus(period.Duration);
 						text += "\n   (" + count + ") " + period;
 						count++;
 					}
@@ -591,7 +591,6 @@ namespace Point85.ShiftSharp.Schedule
 			}
 			catch (Exception)
 			{
-				// ignore
 			}
 
 			return text;

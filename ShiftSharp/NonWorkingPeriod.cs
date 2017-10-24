@@ -34,13 +34,13 @@ namespace Point85.ShiftSharp.Schedule
 	public class NonWorkingPeriod : Named, IComparable<NonWorkingPeriod>
 	{
 		// owning work schedule
-		private WorkSchedule workSchedule;
+		public WorkSchedule WorkSchedule { get; internal set; }
 
 		// starting date and time of day
-		private LocalDateTime startDateTime;
+		public LocalDateTime StartDateTime { get; set; }
 
 		// duration of period
-		private Duration duration;
+		public Duration Duration;
 
 		public NonWorkingPeriod() : base()
 		{
@@ -48,31 +48,18 @@ namespace Point85.ShiftSharp.Schedule
 
 		internal NonWorkingPeriod(string name, string description, LocalDateTime startDateTime, Duration duration) : base(name, description)
 		{
-			SetStartDateTime(startDateTime);
-			SetDuration(duration);
-		}
-
-		/// <summary>
-		/// Get period start date and time
-		/// </summary>
-		/// <returns>Start date and time</returns>
-		public LocalDateTime GetStartDateTime()
-		{
-			return startDateTime;
-		}
-
-		/// <summary>
-		/// Set period start date and time
-		/// </summary>
-		/// <param name="startDateTime">Period start</param>
-		public void SetStartDateTime(LocalDateTime startDateTime)
-		{
 			if (startDateTime == null)
 			{
 				throw new Exception(WorkSchedule.GetMessage("start.not.defined"));
 			}
 
-			this.startDateTime = startDateTime;
+			if (duration == null || duration.TotalSeconds == 0)
+			{
+				throw new Exception(WorkSchedule.GetMessage("duration.not.defined"));
+			}
+
+			StartDateTime = startDateTime;
+			Duration = duration;
 		}
 
 		/// <summary>
@@ -81,30 +68,7 @@ namespace Point85.ShiftSharp.Schedule
 		/// <returns>Period end</returns>
 		public LocalDateTime GetEndDateTime()
 		{
-			return startDateTime.PlusSeconds((long)duration.TotalSeconds);
-		}
-
-		/// <summary>
-		/// Get period duration
-		/// </summary>
-		/// <returns>Duration</returns>
-		public Duration GetDuration()
-		{
-			return duration;
-		}
-
-		/// <summary>
-		/// Set duration
-		/// </summary>
-		/// <param name="duration">Duration</param>
-		public void SetDuration(Duration duration)
-		{
-			if (duration == null || duration.TotalSeconds == 0)
-			{
-				throw new Exception(WorkSchedule.GetMessage("duration.not.defined"));
-			}
-
-			this.duration = duration;
+			return StartDateTime.PlusSeconds((long)Duration.TotalSeconds);
 		}
 
 		/// <summary>
@@ -119,7 +83,7 @@ namespace Point85.ShiftSharp.Schedule
 
 			try
 			{
-				text = base.ToString() + ", " + start + ": " + GetStartDateTime() + " (" + GetDuration() + ")" + ", " + end
+				text = base.ToString() + ", " + start + ": " + StartDateTime + " (" + Duration + ")" + ", " + end
 						+ ": " + GetEndDateTime();
 			}
 			catch (Exception)
@@ -136,21 +100,7 @@ namespace Point85.ShiftSharp.Schedule
 		/// <returns>negative if less than, 0 if equal and positive if greater than</returns>
 		public int CompareTo(NonWorkingPeriod other)
 		{
-			return GetStartDateTime().CompareTo(other.GetStartDateTime());
-		}
-
-		/// <summary>
-		/// Get the work schedule that owns this non-working period
-		/// </summary>
-		/// <returns></returns>
-		public WorkSchedule GetWorkSchedule()
-		{
-			return workSchedule;
-		}
-
-		internal void SetWorkSchedule(WorkSchedule workSchedule)
-		{
-			this.workSchedule = workSchedule;
+			return StartDateTime.CompareTo(other.StartDateTime);
 		}
 
 		/// <summary>
@@ -162,7 +112,7 @@ namespace Point85.ShiftSharp.Schedule
 		{
 			bool isInPeriod = false;
 
-			LocalDate periodStart = GetStartDateTime().Date;
+			LocalDate periodStart = StartDateTime.Date;
 			LocalDate periodEnd = GetEndDateTime().Date;
 
 			if (day.CompareTo(periodStart) >= 0 && day.CompareTo(periodEnd) <= 0)
