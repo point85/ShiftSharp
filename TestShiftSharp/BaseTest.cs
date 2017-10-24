@@ -23,11 +23,11 @@ SOFTWARE.
 */
 
 
-using System;
-using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NodaTime;
 using Point85.ShiftSharp.Schedule;
+using System;
+using System.Collections.Generic;
 
 namespace TestShiftSharp
 {
@@ -67,7 +67,7 @@ namespace TestShiftSharp
 				Assert.IsTrue(shift.GetName().Length > 0);
 				Assert.IsTrue(shift.GetDescription().Length > 0);
 
-				Assert.IsTrue(total.Minutes > 0);
+				Assert.IsTrue(total.TotalMinutes > 0);
 				Assert.IsTrue(shift.GetBreaks() != null);
 				Assert.IsTrue(start != null);
 				Assert.IsTrue(end != null);
