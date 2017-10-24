@@ -35,6 +35,9 @@ namespace Point85.ShiftSharp.Schedule
 	/// </summary>
 	public class WorkSchedule : Named
 	{
+		// name of resource with translatable strings for exception messages
+		private const string MESSAGE_RESOURCE_NAME = "./Resources/Message.properties";
+
 		// resource manager for exception messages
 		internal static PropertyManager MessagesManager;
 
@@ -51,13 +54,6 @@ namespace Point85.ShiftSharp.Schedule
 		private List<NonWorkingPeriod> nonWorkingPeriods = new List<NonWorkingPeriod>();
 
 		/**
- * Default constructor
- */
-		public WorkSchedule() : base()
-		{
-		}
-
-		/**
 		 * Construct a work schedule
 		 * 
 		 * @param name
@@ -69,6 +65,8 @@ namespace Point85.ShiftSharp.Schedule
 		 */
 		public WorkSchedule(string name, string description) : base(name, description)
 		{
+			// localizable string managers
+			MessagesManager = new PropertyManager(MESSAGE_RESOURCE_NAME);
 		}
 
 		/// <summary>

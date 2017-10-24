@@ -46,14 +46,25 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Break.cs" />
+    <Compile Include="DayOff.cs" />
     <Compile Include="Named.cs" />
+    <Compile Include="NonWorkingPeriod.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PropertyManager.cs" />
+    <Compile Include="Rotation.cs" />
+    <Compile Include="RotationSegment.cs" />
+    <Compile Include="Shift.cs" />
+    <Compile Include="ShiftInstance.cs" />
+    <Compile Include="Team.cs" />
     <Compile Include="TimePeriod.cs" />
     <Compile Include="WorkSchedule.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="NewFolder1\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
