@@ -52,8 +52,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BaseTest.cs" />
+    <Compile Include="TestWorkSchedule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestSnapSchedule.cs" />
+    <Compile Include="TestSnippet.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

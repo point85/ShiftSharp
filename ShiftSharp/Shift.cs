@@ -114,7 +114,7 @@ namespace Point85.ShiftSharp.Schedule
 		{
 			int second = SecondOfDay(time);
 
-			if (time.NanosecondOfDay > 500E+06)
+			if (time.NanosecondOfSecond > 500E+06)
 			{
 				second++;
 			}
@@ -136,7 +136,6 @@ namespace Point85.ShiftSharp.Schedule
 		 */
 		public Duration CalculateWorkingTime(LocalTime from, LocalTime to)
 		{
-
 			if (SpansMidnight())
 			{
 				String msg = String.Format(WorkSchedule.GetMessage("shift.spans.midnight"), GetName(), from, to);
@@ -186,7 +185,7 @@ namespace Point85.ShiftSharp.Schedule
 			int delta = toSecond - fromSecond;
 
 			// check for 24 hour shift
-			if (delta == 0 && fromSecond == startSecond && GetDuration().Hours == 24)
+			if (delta == 0 && fromSecond == startSecond && GetDuration().TotalHours == 24)
 			{
 				delta = 86400;
 			}

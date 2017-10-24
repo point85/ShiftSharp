@@ -31,6 +31,7 @@ using System.Collections.Generic;
 
 namespace TestShiftSharp
 {
+	[TestClass]
 	public class TestWorkSchedule : BaseTest
 	{
 		[TestMethod]
@@ -79,7 +80,7 @@ namespace TestShiftSharp
 		}
 
 		[TestMethod]
-		public void testPostalServiceShifts()
+		public void TestPostalServiceShifts()
 		{
 			// United States Postal Service
 			schedule = new WorkSchedule("USPS", "Six 9 hr shifts, rotating every 42 days");
@@ -108,7 +109,7 @@ namespace TestShiftSharp
 		}
 
 		[TestMethod]
-		public void testFirefighterShifts2()
+		public void TestFirefighterShifts2()
 		{
 			// Seattle, WA fire shifts
 			schedule = new WorkSchedule("Seattle", "Four 24 hour alternating shifts");
@@ -130,7 +131,7 @@ namespace TestShiftSharp
 		}
 
 		[TestMethod]
-		public void testFirefighterShifts1()
+		public void TestFirefighterShifts1()
 		{
 			// Kern Co, CA
 			schedule = new WorkSchedule("Kern Co.", "Three 24 hour alternating shifts");
@@ -164,7 +165,7 @@ namespace TestShiftSharp
 		}
 
 		[TestMethod]
-		public void testManufacturingShifts()
+		public void TestManufacturingShifts()
 		{
 			// manufacturing company
 			schedule = new WorkSchedule("Manufacturing Company - four twelves",
@@ -193,7 +194,7 @@ namespace TestShiftSharp
 		}
 
 		[TestMethod]
-		public void testGenericShift()
+		public void TestGenericShift()
 		{
 			// regular work week with holidays and breaks
 			schedule = new WorkSchedule("Regular 40 hour work week", "9 to 5");
@@ -697,7 +698,7 @@ namespace TestShiftSharp
 		}
 
 		[TestMethod]
-		public void testTeamWorkingTime()
+		public void TestTeamWorkingTime()
 		{
 			schedule = new WorkSchedule("Team Working Time", "Test team working time");
 			Duration shiftDuration = Duration.FromHours(12);
@@ -809,7 +810,7 @@ namespace TestShiftSharp
 		}
 
 		[TestMethod]
-		public void testNonWorkingTime()
+		public void TestNonWorkingTime()
 		{
 			schedule = new WorkSchedule("Non Working Time", "Test non working time");
 			LocalDate date = new LocalDate(2017, 1, 1);
@@ -911,7 +912,7 @@ namespace TestShiftSharp
 		}
 
 		[TestMethod]
-		public void testTeamWorkingTime2()
+		public void TestTeamWorkingTime2()
 		{
 			schedule = new WorkSchedule("4 Team Plan", "test schedule");
 
@@ -999,5 +1000,38 @@ namespace TestShiftSharp
 			duration = team1.CalculateWorkingTime(from, to);
 			Assert.IsTrue(duration.Equals(Duration.FromHours(45).Plus(Duration.FromMinutes(30))));
 		}
-	}
-}
+
+		[TestMethod]
+		public void TestPeriod()
+		{
+			// second of day
+			LocalTime t = new LocalTime(0, 0, 0);
+			Assert.IsTrue(TimePeriod.SecondOfDay(t) == 0);
+
+			t = LocalTime.Midnight;
+			Assert.IsTrue(TimePeriod.SecondOfDay(t) == 0);
+
+			t = LocalTime.Noon;
+			Assert.IsTrue(TimePeriod.SecondOfDay(t) == 43200);
+
+			t = new LocalTime(23, 59, 59);
+			Assert.IsTrue(TimePeriod.SecondOfDay(t) == 86399);
+
+			t = LocalTime.MaxValue;
+			Assert.IsTrue(TimePeriod.SecondOfDay(t) == 86399);
+
+			// delta days
+			LocalDate start = new LocalDate(2107, 1, 1);
+			LocalDate end = new LocalDate(2107, 1, 1);
+
+			Assert.IsTrue(TimePeriod.DeltaDays(start, end) == 0);
+
+			for (int i = 0; i < 10; i++)
+			{
+				LocalDate next = end.PlusDays(i);
+				long n = TimePeriod.DeltaDays(start, next);
+				Assert.IsTrue(n == i);
+			}
+		}
+	} // class
+} // namespace

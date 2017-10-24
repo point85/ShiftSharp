@@ -97,11 +97,11 @@ namespace TestShiftSharp
 				// 24 hour shift on midnight is a special case
 				if (total.Equals(Duration.FromHours(24)))
 				{
-					Assert.IsTrue(worked.Hours == 24);
+					Assert.IsTrue(worked.TotalHours == 24);
 				}
 				else
 				{
-					Assert.IsTrue(worked.Hours == 0);
+					Assert.IsTrue(worked.TotalHours == 0);
 				}
 
 				if (spansMidnight)
@@ -115,11 +115,11 @@ namespace TestShiftSharp
 
 				if (total.Equals(Duration.FromHours(24)))
 				{
-					Assert.IsTrue(worked.Hours == 24);
+					Assert.IsTrue(worked.TotalHours == 24);
 				}
 				else
 				{
-					Assert.IsTrue(worked.Hours == 0);
+					Assert.IsTrue(worked.TotalHours == 0);
 				}
 
 				try
@@ -312,6 +312,7 @@ namespace TestShiftSharp
 
 			foreach (NonWorkingPeriod period in periods)
 			{
+				schedule.DeleteNonWorkingPeriod(period);
 			}
 			Assert.IsTrue(schedule.GetNonWorkingPeriods().Count == 0);
 		}
