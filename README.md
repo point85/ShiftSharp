@@ -1,5 +1,5 @@
-# Shift
-The Shift library project manages work schedules.  A work schedule consists of one or more teams who rotate through a sequence of shift and off-shift periods of time.  The Shift project allows breaks during shifts to be defined as well as non-working periods of time (e.g. holidays and scheduled maintenance periods) that are applicable to the entire work schedule.  The C# project is a port of the java project at https://github.com/point85/Shift.
+# ShiftSharp
+The ShiftSharp library project manages work schedules.  A work schedule consists of one or more teams who rotate through a sequence of shift and off-shift periods of time.  The ShiftSharp project allows breaks during shifts to be defined as well as non-working periods of time (e.g. holidays and scheduled maintenance periods) that are applicable to the entire work schedule.  The C# project is a port of the java project at https://github.com/point85/Shift.
 
 ## Concepts
 
@@ -222,7 +222,7 @@ Working shifts
 ## Project Structure
 ShiftSharp depends upon .Net Framework 4.5+ due to use of the NodaTime date and time classes.
 
-ShiftSharp, has the following structure:
+ShiftSharp has the following structure:
  * `/Documentation/html` Doxygen HTML files
  * `/bin/Release` compiled ShiftSharp.dll 
  * `.` - C# source files
