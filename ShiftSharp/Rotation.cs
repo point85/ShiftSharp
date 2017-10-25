@@ -22,7 +22,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-
 using NodaTime;
 using System;
 using System.Collections.Generic;
@@ -34,10 +33,14 @@ namespace Point85.ShiftSharp.Schedule
 	/// </summary>
 	public class Rotation : Named, IComparable<Rotation>
 	{
-		// working periods in the rotation
+		/// <summary>
+		/// working periods in the rotation
+		/// </summary>
 		public List<RotationSegment> RotationSegments { get; private set; } = new List<RotationSegment>();
 
-		// list of working and non-working days
+		/// <summary>
+		/// list of working and non-working days
+		/// </summary>
 		private List<TimePeriod> periods;
 
 		// name of the day off time period
@@ -60,33 +63,26 @@ namespace Point85.ShiftSharp.Schedule
 			DAY_OFF = dayOff;
 		}
 
-		/**
-		 * Default constructor
-		 */
+		/// <summary>
+		/// default constructor
+		/// </summary>
 		public Rotation() : base()
 		{
 		}
 
-		/**
-		 * Constructor
-		 * 
-		 * @param name
-		 *            Rotation name
-		 * @param description
-		 *            Description
-		 * @throws Exception
-		 *             Exception
-		 */
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="name">name of rotation</param>
+		/// <param name="description">description of rotation</param>
 		public Rotation(string name, string description) : base(name, description)
 		{
-
 		}
 
-		/**
-		 * Get the shifts and off-shifts in the rotation
-		 * 
-		 * @return List of periods
-		 */
+		/// <summary>
+		/// get the shifts and off-shifts in the rotation
+		/// </summary>
+		/// <returns>List of time periods</returns>
 		public List<TimePeriod> GetPeriods()
 		{
 			if (periods == null)
@@ -114,36 +110,31 @@ namespace Point85.ShiftSharp.Schedule
 					}
 				}
 			}
-
 			return periods;
 		}
 
-		/**
-		 * Get the number of days in the rotation
-		 * 
-		 * @return Day count
-		 */
-
+		/// <summary>
+		/// Get the number of days in the rotation
+		/// </summary>
+		/// <returns></returns>
 		public int GetDayCount()
 		{
 			return GetPeriods().Count;
 		}
 
-		/**
-		 * Get the duration of this rotation
-		 * 
-		 * @return Duration
-		 */
+		/// <summary>
+		/// Get the duration of this rotation
+		/// </summary>
+		/// <returns>Duration</returns>
 		public Duration GetDuration()
 		{
 			return Duration.FromDays(GetPeriods().Count);
 		}
 
-		/**
-		 * Get the shift rotation's total working time
-		 * 
-		 * @return Duration of working time
-		 */
+		/// <summary>
+		/// Get the shift rotation's total working time
+		/// </summary>
+		/// <returns>Duration</returns>
 		public Duration GetWorkingTime()
 		{
 			Duration sum = Duration.Zero;
@@ -158,20 +149,14 @@ namespace Point85.ShiftSharp.Schedule
 			return sum;
 		}
 
-		/**
-		 * Add a working period to this rotation. A working period starts with a
-		 * shift and specifies the number of days on and days off
-		 * 
-		 * @param startingShift
-		 *            {@link Shift} that starts the period
-		 * @param daysOn
-		 *            Number of days on shift
-		 * @param daysOff
-		 *            Number of days off shift
-		 * @return {@link RotationSegment}
-		 * @throws Exception
-		 *             Exception
-		 */
+		/// <summary>
+		/// Add a working period to this rotation. A working period starts with a
+		/// shift and specifies the number of days on and days off.
+		/// </summary>
+		/// <param name="startingShift">Starting shift of rotation</param>
+		/// <param name="daysOn">Number of day on shift</param>
+		/// <param name="daysOff">Number of days off shift</param>
+		/// <returns>Part of the rotation</returns>
 		public RotationSegment AddSegment(Shift startingShift, int daysOn, int daysOff)
 		{
 			if (startingShift == null)
@@ -184,14 +169,20 @@ namespace Point85.ShiftSharp.Schedule
 			return segment;
 		}
 
+		/// <summary>
+		/// Compare thsi rotation to another rotation
+		/// </summary>
+		/// <param name="other">Other rotation</param>
+		/// <returns></returns>
 		public int CompareTo(Rotation other)
 		{
 			return Name.CompareTo(other.Name);
 		}
 
-		/**
-		 * Build a string representation of this rotation
-		 */
+		/// <summary>
+		/// Build a string representation of this rotation
+		/// </summary>
+		/// <returns>String</returns>
 		public override string ToString()
 		{
 			string named = base.ToString();

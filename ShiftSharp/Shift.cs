@@ -33,15 +33,19 @@ namespace Point85.ShiftSharp.Schedule
 	/// </summary>
 	public class Shift : TimePeriod, IComparable<Shift>
 	{
-		// owning work schedule
+		/// <summary>
+		/// owning work schedule
+		/// </summary>
 		public WorkSchedule WorkSchedule { get; internal set; }
 
-		// breaks
+		/// <summary>
+		/// breaks
+		/// </summary>
 		public List<Break> Breaks { get; private set; } = new List<Break>();
 
-		/**
-		 * Default constructor
-		 */
+		/// <summary>
+		/// Constructor
+		/// </summary>
 		public Shift() : base()
 		{
 		}
@@ -50,12 +54,10 @@ namespace Point85.ShiftSharp.Schedule
 		{
 		}
 
-		/**
-		 * Add a break period to this shift
-		 * 
-		 * @param breakPeriod
-		 *            {@link Break}
-		 */
+		/// <summary>
+		/// Add a break period to this shift
+		/// </summary>
+		/// <param name="breakPeriod">Break</param>
 		public void AddBreak(Break breakPeriod)
 		{
 			if (!this.Breaks.Contains(breakPeriod))
@@ -64,12 +66,10 @@ namespace Point85.ShiftSharp.Schedule
 			}
 		}
 
-		/**
-		 * Remove a break from this shift
-		 * 
-		 * @param breakPeriod
-		 *            {@link Break}
-		 */
+		/// <summary>
+		/// Remove a break from this shift
+		/// </summary>
+		/// <param name="breakPeriod">Break</param>
 		public void RemoveBreak(Break breakPeriod)
 		{
 			if (this.Breaks.Contains(breakPeriod))
@@ -78,21 +78,14 @@ namespace Point85.ShiftSharp.Schedule
 			}
 		}
 
-		/**
-		 * Create a break for this shift
-		 * 
-		 * @param name
-		 *            Name of break
-		 * @param description
-		 *            Description of break
-		 * @param startTime
-		 *            Start of break
-		 * @param duration
-		 *            Duration of break
-		 * @return {@link Break}
-		 * @throws Exception
-		 *             exception
-		 */
+		/// <summary>
+		/// Create a break for this shift
+		/// </summary>
+		/// <param name="name">Name</param>
+		/// <param name="description">Description</param>
+		/// <param name="startTime">Staring time</param>
+		/// <param name="duration">Duration</param>
+		/// <returns></returns>
 		public Break CreateBreak(String name, String description, LocalTime startTime, Duration duration)
 		{
 			Break period = new Break(name, description, startTime, duration);
@@ -112,18 +105,13 @@ namespace Point85.ShiftSharp.Schedule
 			return second;
 		}
 
-		/**
-		 * Calculate the working time between the specified times of day. The shift
-		 * must not span midnight.
-		 * 
-		 * @param from
-		 *            starting time
-		 * @param to
-		 *            Ending time
-		 * @return Duration of working time
-		 * @throws Exception
-		 *             exception
-		 */
+		/// <summary>
+		/// Calculate the working time between the specified times of day. The shift
+		/// must not span midnight.
+		/// </summary>
+		/// <param name="from">Starting local time</param>
+		/// <param name="to">Ending local time</param>
+		/// <returns></returns>
 		public Duration CalculateWorkingTime(LocalTime from, LocalTime to)
 		{
 			if (SpansMidnight())
@@ -135,13 +123,10 @@ namespace Point85.ShiftSharp.Schedule
 			return this.CalculateWorkingTime(from, to, true);
 		}
 
-		/**
-		 * Check to see if this shift crosses midnight
-		 * 
-		 * @return True if the shift extends over midnight, otherwise false
-		 * @throws Exception
-		 *             exception
-		 */
+		/// <summary>
+		/// Check to see if this shift crosses midnight
+		/// </summary>
+		/// <returns>True if it does</returns>
 		public bool SpansMidnight()
 		{
 			int startSecond = ToRoundedSecond(StartTime);
@@ -149,20 +134,13 @@ namespace Point85.ShiftSharp.Schedule
 			return endSecond <= startSecond ? true : false;
 		}
 
-		/**
-		 * Calculate the working time between the specified times of day
-		 * 
-		 * @param from
-		 *            starting time
-		 * @param to
-		 *            Ending time
-		 * @param beforeMidnight
-		 *            If true, and a shift spans midnight, calculate the time before
-		 *            midnight. Otherwise calculate the time after midnight.
-		 * @return Duration of working time
-		 * @throws Exception
-		 *             exception
-		 */
+		/// <summary>
+		/// Calculate the working time between the specified times of day
+		/// </summary>
+		/// <param name="from">Starting local time</param>
+		/// <param name="to">Ending local time</param>
+		/// <param name="beforeMidnight">If true, shifts ends before midnight</param>
+		/// <returns></returns>
 		public Duration CalculateWorkingTime(LocalTime from, LocalTime to, bool beforeMidnight)
 		{
 			Duration duration = Duration.Zero;
@@ -225,15 +203,11 @@ namespace Point85.ShiftSharp.Schedule
 			return duration;
 		}
 
-		/**
-		 * Test if the specified time falls within the shift
-		 * 
-		 * @param time
-		 *            {@link LocalTime}
-		 * @return True if in the shift
-		 * @throws Exception
-		 *             exception
-		 */
+		/// <summary>
+		/// Test if the specified time falls within the shift
+		/// </summary>
+		/// <param name="time">Local time</param>
+		/// <returns>True if this time is in the shift</returns>
 		public bool IsInShift(LocalTime time)
 		{
 			bool answer = false;
@@ -274,11 +248,10 @@ namespace Point85.ShiftSharp.Schedule
 			return answer;
 		}
 
-		/**
-		 * Calculate the total break time for the shift
-		 * 
-		 * @return Duration of all breaks
-		 */
+		/// <summary>
+		/// Calculate the total break time for the shift
+		/// </summary>
+		/// <returns>Sum of breaks</returns>
 		public Duration CalculateBreakTime()
 		{
 			Duration sum = Duration.Zero;
@@ -293,19 +266,20 @@ namespace Point85.ShiftSharp.Schedule
 			return sum;
 		}
 
-		/**
-		 * Compare one shift to another one
-		 */
+		/// <summary>
+		/// Compare one shift to another one
+		/// </summary>
+		/// <param name="other">Other shift</param>
+		/// <returns>-1 if less than, 0 if equal and 1 if greater than</returns>
 		public int CompareTo(Shift other)
 		{
 			return this.Name.CompareTo(other.Name);
 		}
 
-		/**
-		 * Build a string representation of this shift
-		 * 
-		 * @return String
-		 */
+		/// <summary>
+		/// Build a string representation of this shift
+		/// </summary>
+		/// <returns>String</returns>
 		public override string ToString()
 		{
 			string text = base.ToString();
@@ -322,6 +296,10 @@ namespace Point85.ShiftSharp.Schedule
 			return text;
 		}
 
+		/// <summary>
+		/// Shift is a working period
+		/// </summary>
+		/// <returns>True</returns>
 		public override bool IsWorkingPeriod()
 		{
 			return true;

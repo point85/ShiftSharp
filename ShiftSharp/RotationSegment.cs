@@ -23,10 +23,6 @@ SOFTWARE.
 */
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Point85.ShiftSharp.Schedule
 {
@@ -41,21 +37,29 @@ namespace Point85.ShiftSharp.Schedule
 		/// </summary>
 		public Rotation Rotation { get; private set; }
 
-		// strict ordering
+		/// <summary>
+		/// ordering within the rotation
+		/// </summary>
 		public int Sequence { get; set; } = 0;
 
-		// shift that starts this segment
+		/// <summary>
+		/// shift that starts this segment
+		/// </summary>
 		public Shift StartingShift { get; set; }
 
-		// number of days on
+		/// <summary>
+		/// number of days on shift
+		/// </summary>
 		public int DaysOn { get; set; } = 0;
 
-		// number of days off
+		/// <summary>
+		/// number of days off shift
+		/// </summary>
 		public int DaysOff { get; set; } = 0;
 
-		/**
-		 * Constructor
-		 */
+		/// <summary>
+		/// Constructor
+		/// </summary>
 		public RotationSegment()
 		{
 		}
@@ -68,13 +72,12 @@ namespace Point85.ShiftSharp.Schedule
 			this.Rotation = rotation;
 		}
 
-		/**
-		 * Compare this rotation segment to another one.
-		 * 
-		 * @param other
-		 *            rotation segment
-		 * @return -1 if less than, 0 if equal and 1 if greater than
-		 */
+
+		/// <summary>
+		/// Compare this rotation segment to
+		/// </summary>
+		/// <param name="other">Other rotation segment</param>
+		/// <returns>-1 if less than, 0 if equal and 1 if greater than</returns>		
 		public int CompareTo(RotationSegment other)
 		{
 			int value = 0;

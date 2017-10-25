@@ -33,15 +33,24 @@ namespace Point85.ShiftSharp.Schedule
 	/// </summary>
 	public class NonWorkingPeriod : Named, IComparable<NonWorkingPeriod>
 	{
-		// owning work schedule
+		/// <summary>
+		/// owning work schedule
+		/// </summary>
 		public WorkSchedule WorkSchedule { get; internal set; }
 
-		// starting date and time of day
+		/// <summary>
+		/// starting date and time of day
+		/// </summary>
 		public LocalDateTime StartDateTime { get; set; }
 
-		// duration of period
+		/// <summary>
+		/// duration of period
+		/// </summary>
 		public Duration Duration;
 
+		/// <summary>
+		/// Constructor
+		/// </summary>
 		public NonWorkingPeriod() : base()
 		{
 		}

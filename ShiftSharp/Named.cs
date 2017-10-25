@@ -22,7 +22,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-
 using System;
 
 namespace Point85.ShiftSharp.Schedule
@@ -32,10 +31,14 @@ namespace Point85.ShiftSharp.Schedule
 	/// </summary>
 	public abstract class Named
 	{
-		// name
+		/// <summary>
+		/// name
+		/// </summary>
 		public string Name { get; set; }
 
-		// description
+		/// <summary>
+		/// description
+		/// </summary>
 		public string Description { get; set; }
 
 		protected Named()
@@ -43,6 +46,11 @@ namespace Point85.ShiftSharp.Schedule
 
 		}
 
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="name">Name</param>
+		/// <param name="description">Description</param>
 		protected Named(string name, string description)
 		{
 			Name = name ?? throw new Exception(WorkSchedule.GetMessage("name.not.defined"));

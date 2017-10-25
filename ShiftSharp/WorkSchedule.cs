@@ -44,29 +44,33 @@ namespace Point85.ShiftSharp.Schedule
 		// cached time zone for working time calculations
 		private DateTimeZone ZONE_ID = DateTimeZone.Utc;
 
-		// list of teams
+		/// <summary>
+		/// list of teams
+		/// </summary>
 		public List<Team> Teams { get; private set; } = new List<Team>();
 
-		// list of Shifts
+		/// <summary>
+		/// list of Shifts
+		/// </summary>
 		public List<Shift> Shifts { get; private set; } = new List<Shift>();
 
-		// holidays and planned downtime
+		/// <summary>
+		/// holidays and planned downtime
+		/// </summary>
 		public List<NonWorkingPeriod> NonWorkingPeriods { get; private set; } = new List<NonWorkingPeriod>();
 
+		/// <summary>
+		/// Constructor
+		/// </summary>
 		public WorkSchedule() : base()
 		{
 		}
 
-		/**
-		 * Construct a work schedule
-		 * 
-		 * @param name
-		 *            Schedule name
-		 * @param description
-		 *            Schedule description
-		 * @throws Exception
-		 *             exception
-		 */
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="name">Name</param>
+		/// <param name="description">Description</param>
 		public WorkSchedule(string name, string description) : base(name, description)
 		{
 		}
@@ -79,13 +83,10 @@ namespace Point85.ShiftSharp.Schedule
 			return MessagesManager.GetString(key);
 		}
 
-
-		/**
-		 * Remove this team from the schedule
-		 * 
-		 * @param team
-		 *            {@link Team}
-		 */
+		/// <summary>
+		/// Remove this team from the schedule
+		/// </summary>
+		/// <param name="team">Team</param>
 		public void DeleteTeam(Team team)
 		{
 			if (Teams.Contains(team))
@@ -94,12 +95,10 @@ namespace Point85.ShiftSharp.Schedule
 			}
 		}
 
-		/**
-		 * Remove a non-working period from the schedule
-		 * 
-		 * @param period
-		 *            {@link NonWorkingPeriod}
-		 */
+		/// <summary>
+		/// Remove a non-working period from the schedule
+		/// </summary>
+		/// <param name="period">Non-working period</param>
 		public void DeleteNonWorkingPeriod(NonWorkingPeriod period)
 		{
 			if (this.NonWorkingPeriods.Contains(period))
@@ -108,16 +107,11 @@ namespace Point85.ShiftSharp.Schedule
 			}
 		}
 
-		/**
-		 * Get the list of shift instances for the specified date that start in that
-		 * date
-		 * 
-		 * @param day
-		 *            LocalDate
-		 * @return List of {@link ShiftInstance}
-		 * @throws Exception
-		 *             exception
-		 */
+		/// <summary>
+		/// Get the list of shift instances for the specified date that start in that date
+		/// </summary>
+		/// <param name="day">Date</param>
+		/// <returns>List of shift instances</returns>
 		public List<ShiftInstance> GetShiftInstancesForDay(LocalDate day)
 		{
 			List<ShiftInstance> workingShifts = new List<ShiftInstance>();
@@ -157,15 +151,11 @@ namespace Point85.ShiftSharp.Schedule
 			return workingShifts;
 		}
 
-		/**
-		 * Get the list of shift instances for the specified date and time of day
-		 * 
-		 * @param dateTime
-		 *            Date and time of day
-		 * @return List of {@link ShiftInstance}
-		 * @throws Exception
-		 *             exception
-		 */
+		/// <summary>
+		/// Get the list of shift instances for the specified date and time of day
+		/// </summary>
+		/// <param name="dateTime">Date and time of day</param>
+		/// <returns>List of shift instances</returns>
 		public List<ShiftInstance> GetShiftInstancesForTime(LocalDateTime dateTime)
 		{
 			List<ShiftInstance> workingShifts = new List<ShiftInstance>();
@@ -184,21 +174,14 @@ namespace Point85.ShiftSharp.Schedule
 			return workingShifts;
 		}
 
-		/**
-		 * Create a team
-		 * 
-		 * @param name
-		 *            Name of team
-		 * @param description
-		 *            Team description
-		 * @param rotation
-		 *            Shift rotation
-		 * @param rotationStart
-		 *            Start of rotation
-		 * @return {@link Team}
-		 * @throws Exception
-		 *             exception
-		 */
+		/// <summary>
+		/// Create a team
+		/// </summary>
+		/// <param name="name">Name</param>
+		/// <param name="description">Description</param>
+		/// <param name="rotation">Shift rotation</param>
+		/// <param name="rotationStart">Start of rotation</param>
+		/// <returns>Team</returns>
 		public Team CreateTeam(string name, string description, Rotation rotation, LocalDate rotationStart)
 		{
 			Team team = new Team(name, description, rotation, rotationStart);
@@ -214,21 +197,14 @@ namespace Point85.ShiftSharp.Schedule
 			return team;
 		}
 
-		/**
-		 * Create a shift
-		 * 
-		 * @param name
-		 *            Name of shift
-		 * @param description
-		 *            Description of shift
-		 * @param start
-		 *            Shift start time of day
-		 * @param duration
-		 *            Shift duration
-		 * @return {@link Shift}
-		 * @throws Exception
-		 *             exception
-		 */
+		/// <summary>
+		/// Create a shift
+		/// </summary>
+		/// <param name="name">Name</param>
+		/// <param name="description">Description</param>
+		/// <param name="start">Start of shift</param>
+		/// <param name="duration">Duration of shift</param>
+		/// <returns>Shift</returns>
 		public Shift CreateShift(string name, string description, LocalTime start, Duration duration)
 		{
 			Shift shift = new Shift(name, description, start, duration);
@@ -243,14 +219,10 @@ namespace Point85.ShiftSharp.Schedule
 			return shift;
 		}
 
-		/**
-		 * Delete this shift
-		 * 
-		 * @param shift
-		 *            {@link Shift} to delete
-		 * @throws Exception
-		 *             exception
-		 */
+		/// <summary>
+		/// Delete this shift
+		/// </summary>
+		/// <param name="shift">Shift</param>
 		public void DeleteShift(Shift shift)
 		{
 			if (!Shifts.Contains(shift))
@@ -279,21 +251,14 @@ namespace Point85.ShiftSharp.Schedule
 			Shifts.Remove(shift);
 		}
 
-		/**
-		 * Create a non-working period of time
-		 * 
-		 * @param name
-		 *            Name of period
-		 * @param description
-		 *            Description of period
-		 * @param startDateTime
-		 *            Starting date and time of day
-		 * @param duration
-		 *            Duration of period
-		 * @return {@link NonWorkingPeriod}
-		 * @throws Exception
-		 *             exception
-		 */
+		/// <summary>
+		/// Create a non-working period of time
+		/// </summary>
+		/// <param name="name">Name</param>
+		/// <param name="description">Description</param>
+		/// <param name="startDateTime">Starting date and time of day</param>
+		/// <param name="duration">Durtation of period</param>
+		/// <returns>NonWorkingPeriod</returns>
 		public NonWorkingPeriod CreateNonWorkingPeriod(string name, string description, LocalDateTime startDateTime,
 				Duration duration)
 		{
@@ -312,12 +277,10 @@ namespace Point85.ShiftSharp.Schedule
 			return period;
 		}
 
-		/**
-		 * Get total duration of rotation across all teams.
-		 * 
-		 * @return Duration of rotation
-		 * @throws Exception Exception
-		 */
+		/// <summary>
+		/// Get total duration of rotation across all teams.
+		/// </summary>
+		/// <returns>Duration of rotation</returns>
 		public Duration GetRotationDuration()
 		{
 			Duration sum = Duration.Zero;
@@ -329,11 +292,10 @@ namespace Point85.ShiftSharp.Schedule
 			return sum;
 		}
 
-		/**
-		 * Get the total working time for all team rotations
-		 * 
-		 * @return Team rotation working time
-		 */
+		/// <summary>
+		/// Get the total working time for all team rotations
+		/// </summary>
+		/// <returns>Duration of working time</returns>
 		public Duration GetRotationWorkingTime()
 		{
 			Duration sum = Duration.Zero;
@@ -345,18 +307,13 @@ namespace Point85.ShiftSharp.Schedule
 			return sum;
 		}
 
-		/**
-		 * Calculate the scheduled working time between the specified dates and
-		 * times of day. Non-working periods are removed.
-		 * 
-		 * @param from
-		 *            Starting date and time
-		 * @param to
-		 *            Ending date and time
-		 * @return Working time duration
-		 * @throws Exception
-		 *             exception
-		 */
+		/// <summary>
+		/// Calculate the scheduled working time between the specified dates and
+		/// times of day.Non-working periods are removed.
+		/// </summary>
+		/// <param name="from">Starting date and time of day</param>
+		/// <param name="to">Ending date and time of day</param>
+		/// <returns>Duration of working time</returns>
 		public Duration CalculateWorkingTime(LocalDateTime from, LocalDateTime to)
 		{
 			Duration sum = Duration.Zero;
@@ -376,22 +333,15 @@ namespace Point85.ShiftSharp.Schedule
 			{
 				sum = Duration.Zero;
 			}
-
 			return sum;
 		}
 
-		/**
-		 * Calculate the non-working time between the specified dates and times of
-		 * day.
-		 * 
-		 * @param from
-		 *            Starting date and time
-		 * @param to
-		 *            Ending date and time
-		 * @return Non-working time duration
-		 * @throws Exception
-		 *             exception
-		 */
+		/// <summary>
+		/// Calculate the non-working time between the specified dates and times of day.
+		/// </summary>
+		/// <param name="from">Starting date and time of day</param>
+		/// <param name="to">Ending date and time of day</param>
+		/// <returns>Duration of non-working time</returns>
 		public Duration CalculateNonWorkingTime(LocalDateTime from, LocalDateTime to)
 		{
 			Duration sum = Duration.Zero;
@@ -446,20 +396,14 @@ namespace Point85.ShiftSharp.Schedule
 					break;
 				}
 			}
-
 			return sum;
 		}
 
-		/**
-		 * Print shift instances
-		 * 
-		 * @param start
-		 *            Starting date
-		 * @param end
-		 *            Ending date
-		 * @throws Exception
-		 *             exception
-		 */
+		/// <summary>
+		/// Print shift instances to the console
+		/// </summary>
+		/// <param name="start">Starting date</param>
+		/// <param name="end">Ending date</param>
 		public void PrintShiftInstances(LocalDate start, LocalDate end)
 		{
 			if (start.CompareTo(end) < 0)
@@ -495,11 +439,10 @@ namespace Point85.ShiftSharp.Schedule
 			}
 		}
 
-		/**
-		 * Build a string value for the work schedule
-		 * 
-		 * @return string
-		 */
+		/// <summary>
+		/// Build a string value for the work schedule
+		/// </summary>
+		/// <returns>String</returns>
 		public override string ToString()
 		{
 			string sch = GetMessage("schedule");

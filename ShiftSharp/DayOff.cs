@@ -22,7 +22,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-
 using NodaTime;
 
 namespace Point85.ShiftSharp.Schedule
@@ -37,6 +36,10 @@ namespace Point85.ShiftSharp.Schedule
 		{
 		}
 
+		/// <summary>
+		/// A DayOff is not a working period
+		/// </summary>
+		/// <returns>False</returns>
 		public override bool IsWorkingPeriod()
 		{
 			return false;

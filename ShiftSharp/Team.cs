@@ -32,18 +32,24 @@ namespace Point85.ShiftSharp.Schedule
 	/// </summary>
 	public class Team : Named, IComparable<Team>
 	{
-		// owning work schedule
+		/// <summary>
+		/// owning work schedule
+		/// </summary>
 		public WorkSchedule WorkSchedule { get; set; }
 
-		// reference date for starting the rotations
+		/// <summary>
+		/// reference date for starting the rotations
+		/// </summary>
 		public LocalDate RotationStart { get; set; }
 
-		// shift rotation days
+		/// <summary>
+		/// shift rotation days
+		/// </summary>
 		public Rotation Rotation { get; set; }
 
-		/**
-		 * Default constructor
-		 */
+		/// <summary>
+		/// Constructor
+		/// </summary>
 		public Team() : base()
 		{
 		}
@@ -54,37 +60,29 @@ namespace Point85.ShiftSharp.Schedule
 			this.RotationStart = rotationStart;
 		}
 
-		/**
-		 * Get the duration of the shift rotation
-		 * 
-		 * @return Duration
-		 * @throws Exception
-		 *             exception
-		 */
+		/// <summary>
+		/// Get the duration of the shift rotation
+		/// </summary>
+		/// <returns>Duration</returns>
 		public Duration GetRotationDuration()
 		{
 			return Rotation.GetDuration();
 		}
 
-		/**
-		 * Get the shift rotation's working time as a percentage of the rotation
-		 * duration
-		 * 
-		 * @return Percentage
-		 * @throws Exception
-		 *             exception
-		 */
+		/// <summary>
+		/// Get the shift rotation's working time as a percentage of the rotation duration
+		/// </summary>
+		/// <returns>Percentage</returns>
 		public float GetPercentageWorked()
 		{
 			double ratio = Rotation.GetWorkingTime().TotalSeconds / GetRotationDuration().TotalSeconds;
 			return (float)ratio * 100.0f;
 		}
 
-		/**
-		 * Get the average number of hours worked each week by this team
-		 * 
-		 * @return Duration of hours worked per week
-		 */
+		/// <summary>
+		/// Get the average number of hours worked each week by this team
+		/// </summary>
+		/// <returns>Duration</returns>
 		public Duration GetHoursWorkedPerWeek()
 		{
 			double days = Rotation.GetDuration().TotalDays;
@@ -92,15 +90,11 @@ namespace Point85.ShiftSharp.Schedule
 			return Duration.FromSeconds(secPerWeek);
 		}
 
-		/**
-		 * Get the day number in the rotation for this local date
-		 * 
-		 * @param date
-		 *            LocalDate
-		 * @return day number in the rotation, starting at 1
-		 * @throws Exception
-		 *             exception
-		 */
+		/// <summary>
+		/// Get the day number in the rotation for this local date
+		/// </summary>
+		/// <param name="date">Date in rotation</param>
+		/// <returns>Day number</returns>
 		public int GetDayInRotation(LocalDate date)
 		{
 			// calculate total number of days from start of rotation
@@ -116,15 +110,11 @@ namespace Point85.ShiftSharp.Schedule
 			return dayInRotation;
 		}
 
-		/**
-		 * Get the {@link ShiftInstance} for the specified day
-		 * 
-		 * @param day
-		 *            Day with a shift instance
-		 * @return {@link ShiftInstance}
-		 * @throws Exception
-		 *             exception
-		 */
+		/// <summary>
+		/// Get the ShiftInstance for the specified day
+		/// </summary>
+		/// <param name="day">Date</param>
+		/// <returns>Shift instance</returns>
 		public ShiftInstance GetShiftInstanceForDay(LocalDate day)
 		{
 			ShiftInstance instance = null;
@@ -140,22 +130,16 @@ namespace Point85.ShiftSharp.Schedule
 				LocalDateTime startDateTime = day.At(period.StartTime);
 				instance = new ShiftInstance((Shift)period, startDateTime, this);
 			}
-
 			return instance;
 		}
 
-		/**
-		 * Check to see if this day is a day off
-		 * 
-		 * @param day
-		 *            Date to check
-		 * @return True if a day off
-		 * @throws Exception
-		 *             Exception
-		 */
+		/// <summary>
+		/// Check to see if this day is a day off
+		/// </summary>
+		/// <param name="day">Date</param>
+		/// <returns>True if this is a day off</returns>
 		public bool IsDayOff(LocalDate day)
 		{
-
 			bool dayOff = false;
 
 			Rotation shiftRotation = Rotation;
@@ -170,20 +154,14 @@ namespace Point85.ShiftSharp.Schedule
 			}
 
 			return dayOff;
-
 		}
 
-		/**
-		 * Calculate the schedule working time between the specified dates and times
-		 * 
-		 * @param from
-		 *            Starting date and time of day
-		 * @param to
-		 *            Ending date and time of day
-		 * @return Duration of working time
-		 * @throws Exception
-		 *             exception
-		 */
+		/// <summary>
+		/// Calculate the schedule working time between the specified dates and times
+		/// </summary>
+		/// <param name="from">Starting date and time</param>
+		/// <param name="to">Ending date and time</param>
+		/// <returns>Duration</returns>
 		public Duration CalculateWorkingTime(LocalDateTime from, LocalDateTime to)
 		{
 			if (from.CompareTo(to) > 0)
@@ -278,17 +256,20 @@ namespace Point85.ShiftSharp.Schedule
 			return sum;
 		}
 
-		/**
-		 * Compare one team to another
-		 */
+		/// <summary>
+		/// Compare one team to another
+		/// </summary>
+		/// <param name="other">Other team</param>
+		/// <returns>-1 if less than, 0 if equal and 1 if greater than</returns>
 		public int CompareTo(Team other)
 		{
 			return Name.CompareTo(other.Name);
 		}
 
-		/**
-		 * Build a string value for this team
-		 */
+		/// <summary>
+		/// Build a string value for this team
+		/// </summary>
+		/// <returns>String</returns>
 		public override string ToString()
 		{
 			string rpct = WorkSchedule.GetMessage("rotation.percentage");

@@ -22,7 +22,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-
 using System;
 using NodaTime;
 
@@ -35,16 +34,27 @@ namespace Point85.ShiftSharp.Schedule
 	{
 		private const int SECONDS_PER_DAY = 24 * 60 * 60;
 
-		// starting time of day from midnight 
+		/// <summary>
+		/// starting time of day from midnight 
+		/// </summary>
 		public LocalTime StartTime { get; set; }
 
-		// length of time period
+		/// <summary>
+		/// length of time period
+		/// </summary>
 		public Duration Duration { get; set; }
 
 		protected TimePeriod() : base()
 		{
 		}
 
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="name">Name</param>
+		/// <param name="description">Desription</param>
+		/// <param name="startTime">Starting time</param>
+		/// <param name="duration">Duration</param>
 		protected TimePeriod(string name, string description, LocalTime startTime, Duration duration) : base(name, description)
 		{
 			if (startTime == null)
@@ -75,23 +85,38 @@ namespace Point85.ShiftSharp.Schedule
 			return StartTime.PlusSeconds((long)Duration.TotalSeconds);
 		}
 
-		// breaks are considered to be in the shift's working period
+		/// <summary>
+		/// Check to see if this period a working period
+		/// </summary>
+		/// <returns>True if it is</returns>
 		abstract public bool IsWorkingPeriod();
 
+		/// <summary>
+		/// Calculate the second in the day for this time
+		/// </summary>
+		/// <param name="time">Local time</param>
+		/// <returns>Second in day</returns>
 		public static int SecondOfDay(LocalTime time)
 		{
 			return (int)(time.NanosecondOfDay / 1E+09);
 		}
 
+		/// <summary>
+		/// Calculate the number of days between the start and end
+		/// </summary>
+		/// <param name="start">Starting date</param>
+		/// <param name="end">Ending date</param>
+		/// <returns>Number of days</returns>
 		public static long DeltaDays(LocalDate start, LocalDate end)
 		{
 			Period delta = Period.Between(start, end, PeriodUnits.Days);
 			return delta.Days;
 		}
 
-		/**
-		 * Build a string value for this period
-		 */
+		/// <summary>
+		/// Build a string value for this period
+		/// </summary>
+		/// <returns>String</returns>
 		public override string ToString()
 		{
 			string text = "";
