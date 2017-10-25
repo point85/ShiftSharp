@@ -33,13 +33,13 @@ namespace Point85.ShiftSharp.Schedule
 	public class Team : Named, IComparable<Team>
 	{
 		// owning work schedule
-		private WorkSchedule workSchedule;
+		public WorkSchedule WorkSchedule { get; set; }
 
 		// reference date for starting the rotations
-		private LocalDate rotationStart;
+		public LocalDate RotationStart { get; set; }
 
 		// shift rotation days
-		private Rotation rotation;
+		public Rotation Rotation { get; set; }
 
 		/**
 		 * Default constructor
@@ -50,68 +50,8 @@ namespace Point85.ShiftSharp.Schedule
 
 		internal Team(string name, string description, Rotation rotation, LocalDate rotationStart) : base(name, description)
 		{
-			this.rotation = rotation;
-			this.SetRotationStart(rotationStart);
-		}
-
-		/**
-		 * Get rotation start
-		 * 
-		 * @return Rotation start date
-		 */
-		public LocalDate GetRotationStart()
-		{
-			return rotationStart;
-		}
-
-		/**
-		 * Get rotation start
-		 * 
-		 * @param rotationStart
-		 *            Starting date of rotation
-		 */
-		public void SetRotationStart(LocalDate rotationStart)
-		{
-			this.rotationStart = rotationStart;
-		}
-
-		/*
-		private long GetDayFrom()
-		{
-			LocalDate localDate;
-			int eraYear = localDate.YearOfEra;
-			//NodaTime.Calendars.Era era = rotationStart.Era;
-			//LocalDateTime now;
-			Instant unixStart = Instant.FromUnixTimeSeconds(0);
-			Instant.FromUtc(2017, 10, 23, 0, 0, 0);
-			Instant now = SystemClock.Instance.GetCurrentInstant();
-
-			Instant unixEpoch = NodaConstants.UnixEpoch;
-			Duration duration = now.Minus(unixEpoch);
-
-			return rotationStart.toEpochDay();
-		}
-		*/
-
-		/**
-		 * Get the shift rotation for this team
-		 * 
-		 * @return {@link Rotation}
-		 */
-		public Rotation GetRotation()
-		{
-			return rotation;
-		}
-
-		/**
-		 * Set the shift rotation for this team
-		 * 
-		 * @param rotation
-		 *            {@link Rotation}
-		 */
-		public void SetRotation(Rotation rotation)
-		{
-			this.rotation = rotation;
+			this.Rotation = rotation;
+			this.RotationStart = rotationStart;
 		}
 
 		/**
@@ -123,7 +63,7 @@ namespace Point85.ShiftSharp.Schedule
 		 */
 		public Duration GetRotationDuration()
 		{
-			return GetRotation().GetDuration();
+			return Rotation.GetDuration();
 		}
 
 		/**
@@ -136,7 +76,7 @@ namespace Point85.ShiftSharp.Schedule
 		 */
 		public float GetPercentageWorked()
 		{
-			double ratio = GetRotation().GetWorkingTime().TotalSeconds / GetRotationDuration().TotalSeconds;
+			double ratio = Rotation.GetWorkingTime().TotalSeconds / GetRotationDuration().TotalSeconds;
 			return (float)ratio * 100.0f;
 		}
 
@@ -147,8 +87,8 @@ namespace Point85.ShiftSharp.Schedule
 		 */
 		public Duration GetHoursWorkedPerWeek()
 		{
-			double days = GetRotation().GetDuration().TotalDays;
-			double secPerWeek = GetRotation().GetWorkingTime().TotalSeconds * (7.0f / days);
+			double days = Rotation.GetDuration().TotalDays;
+			double secPerWeek = Rotation.GetWorkingTime().TotalSeconds * (7.0f / days);
 			return Duration.FromSeconds(secPerWeek);
 		}
 
@@ -164,15 +104,15 @@ namespace Point85.ShiftSharp.Schedule
 		public int GetDayInRotation(LocalDate date)
 		{
 			// calculate total number of days from start of rotation
-			long deltaDays = TimePeriod.DeltaDays(rotationStart, date);
+			long deltaDays = TimePeriod.DeltaDays(RotationStart, date);
 
 			if (deltaDays < 0)
 			{
-				string msg = string.Format(WorkSchedule.GetMessage("end.earlier.than.start"), rotationStart, date);
+				string msg = string.Format(WorkSchedule.GetMessage("end.earlier.than.start"), RotationStart, date);
 				throw new Exception(msg);
 			}
 
-			int dayInRotation = (int)(deltaDays % GetRotation().GetDuration().Days) + 1;
+			int dayInRotation = (int)(deltaDays % Rotation.GetDuration().Days) + 1;
 			return dayInRotation;
 		}
 
@@ -189,7 +129,7 @@ namespace Point85.ShiftSharp.Schedule
 		{
 			ShiftInstance instance = null;
 
-			Rotation shiftRotation = GetRotation();
+			Rotation shiftRotation = Rotation;
 			int dayInRotation = GetDayInRotation(day);
 
 			// shift or off shift
@@ -197,7 +137,7 @@ namespace Point85.ShiftSharp.Schedule
 
 			if (period.IsWorkingPeriod())
 			{
-				LocalDateTime startDateTime = day.At(period.GetStart());
+				LocalDateTime startDateTime = day.At(period.StartTime);
 				instance = new ShiftInstance((Shift)period, startDateTime, this);
 			}
 
@@ -218,7 +158,7 @@ namespace Point85.ShiftSharp.Schedule
 
 			bool dayOff = false;
 
-			Rotation shiftRotation = GetRotation();
+			Rotation shiftRotation = Rotation;
 			int dayInRotation = GetDayInRotation(day);
 
 			// shift or off shift
@@ -258,7 +198,7 @@ namespace Point85.ShiftSharp.Schedule
 			LocalTime thisTime = from.TimeOfDay;
 			LocalDate toDate = to.Date;
 			LocalTime toTime = to.TimeOfDay;
-			int dayCount = GetRotation().GetDayCount();
+			int dayCount = Rotation.GetDayCount();
 
 			// get the working shift from yesterday
 			Shift lastShift = null;
@@ -326,7 +266,7 @@ namespace Point85.ShiftSharp.Schedule
 					if (rotationEndDate.CompareTo(toDate) < 0)
 					{
 						n = dayCount;
-						sum = sum.Plus(GetRotation().GetWorkingTime());
+						sum = sum.Plus(Rotation.GetWorkingTime());
 					}
 				}
 
@@ -336,21 +276,6 @@ namespace Point85.ShiftSharp.Schedule
 			} // end day loop
 
 			return sum;
-		}
-
-		/**
-		 * Get the work schedule that owns this team
-		 * 
-		 * @return {@link WorkSchedule}
-		 */
-		public WorkSchedule GetWorkSchedule()
-		{
-			return workSchedule;
-		}
-
-		internal void SetWorkSchedule(WorkSchedule workSchedule)
-		{
-			this.workSchedule = workSchedule;
 		}
 
 		/**
@@ -374,12 +299,11 @@ namespace Point85.ShiftSharp.Schedule
 			string text = "";
 			try
 			{
-				text = base.ToString() + ", " + rs + ": " + GetRotationStart() + ", " + GetRotation() + ", " + rpct + ": "
+				text = base.ToString() + ", " + rs + ": " + RotationStart + ", " + Rotation + ", " + rpct + ": "
 						+ GetPercentageWorked().ToString("0.00") + "%" + ", " + avg + ": " + GetHoursWorkedPerWeek();
 			}
 			catch (Exception)
 			{
-				// ignore
 			}
 
 			return text;

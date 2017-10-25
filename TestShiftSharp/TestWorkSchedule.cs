@@ -300,7 +300,7 @@ namespace TestShiftSharp
 			Assert.IsTrue(shift3.CompareTo(shift3) == 0);
 
 			Team team3 = new Team();
-			Assert.IsTrue(team3.GetWorkSchedule() == null);
+			Assert.IsTrue(team3.WorkSchedule == null);
 
 			RotationSegment segment = new RotationSegment();
 			segment.Sequence = 1;
@@ -318,14 +318,14 @@ namespace TestShiftSharp
 			Assert.IsTrue(nwp.WorkSchedule == null);
 
 
-			Assert.IsTrue(team1.GetWorkSchedule().Equals(schedule));
+			Assert.IsTrue(team1.WorkSchedule.Equals(schedule));
 
 
 			Assert.IsTrue(!team1.IsDayOff(startRotation));
 
 
 			Assert.IsTrue(team1.CompareTo(team1) == 0);
-			team3.SetRotation(rotation1);
+			team3.Rotation = rotation1;
 
 
 			Assert.IsTrue(!memorialDay.IsInPeriod(new LocalDate(2016, 1, 1)));
@@ -379,7 +379,7 @@ namespace TestShiftSharp
 
 			try
 			{
-				shift.SetDuration(Duration.FromSeconds(0));
+				shift.Duration = Duration.FromSeconds(0);
 				Assert.Fail();
 			}
 			catch (Exception)
@@ -388,7 +388,7 @@ namespace TestShiftSharp
 
 			try
 			{
-				shift.SetDuration(Duration.FromSeconds(48 * 3600));
+				shift.Duration = Duration.FromSeconds(48 * 3600);
 				Assert.Fail();
 			}
 			catch (Exception)
@@ -466,8 +466,8 @@ namespace TestShiftSharp
 
 			// breaks
 			Break lunch = shift.CreateBreak("Lunch", "Lunch", new LocalTime(12, 0, 0), Duration.FromMinutes(60));
-			lunch.SetDuration(Duration.FromMinutes(30));
-			lunch.SetStart(new LocalTime(11, 30, 0));
+			lunch.Duration = Duration.FromMinutes(30);
+			lunch.StartTime = new LocalTime(11, 30, 0);
 			shift.RemoveBreak(lunch);
 			shift.RemoveBreak(lunch);
 
@@ -703,7 +703,7 @@ namespace TestShiftSharp
 
 			LocalDate startRotation = new LocalDate(2017, 1, 1);
 			Team team = schedule.CreateTeam("Team", "Team", rotation, startRotation);
-			team.SetRotationStart(startRotation);
+			team.RotationStart = startRotation;
 
 			// case #1
 			LocalDateTime from = startRotation.PlusDays(rotation.GetDayCount()).At(shiftStart);
@@ -755,7 +755,7 @@ namespace TestShiftSharp
 			rotation2.AddSegment(shift2, 1, 1);
 
 			Team team2 = schedule.CreateTeam("Team2", "Team 2", rotation2, startRotation);
-			team2.SetRotationStart(startRotation);
+			team2.RotationStart = startRotation;
 
 			// case #1
 			from = startRotation.PlusDays(rotation.GetDayCount()).At(shiftStart);
@@ -881,7 +881,7 @@ namespace TestShiftSharp
 
 			LocalDate startRotation = new LocalDate(2017, 1, 1);
 			Team team = schedule.CreateTeam("Team", "Team", rotation, startRotation);
-			team.SetRotationStart(startRotation);
+			team.RotationStart = startRotation;
 
 			period1 = schedule.CreateNonWorkingPeriod("Day1", "First test day", date.At(LocalTime.Midnight),
 					Duration.FromHours(24));

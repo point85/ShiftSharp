@@ -144,7 +144,7 @@ namespace Point85.ShiftSharp.Schedule
 		 */
 		public bool SpansMidnight()
 		{
-			int startSecond = ToRoundedSecond(GetStart());
+			int startSecond = ToRoundedSecond(StartTime);
 			int endSecond = ToRoundedSecond(GetEnd());
 			return endSecond <= startSecond ? true : false;
 		}
@@ -167,7 +167,7 @@ namespace Point85.ShiftSharp.Schedule
 		{
 			Duration duration = Duration.Zero;
 
-			int startSecond = ToRoundedSecond(GetStart());
+			int startSecond = ToRoundedSecond(StartTime);
 			int endSecond = ToRoundedSecond(GetEnd());
 			int fromSecond = ToRoundedSecond(from);
 			int toSecond = ToRoundedSecond(to);
@@ -175,7 +175,7 @@ namespace Point85.ShiftSharp.Schedule
 			int delta = toSecond - fromSecond;
 
 			// check for 24 hour shift
-			if (delta == 0 && fromSecond == startSecond && GetDuration().TotalHours == 24)
+			if (delta == 0 && fromSecond == startSecond && Duration.TotalHours == 24)
 			{
 				delta = 86400;
 			}
@@ -238,7 +238,7 @@ namespace Point85.ShiftSharp.Schedule
 		{
 			bool answer = false;
 
-			LocalTime start = GetStart();
+			LocalTime start = StartTime;
 			LocalTime end = GetEnd();
 
 			int onStart = time.CompareTo(start);
@@ -287,7 +287,7 @@ namespace Point85.ShiftSharp.Schedule
 
 			foreach (Break b in breaks)
 			{
-				sum = sum.Plus(b.GetDuration());
+				sum = sum.Plus(b.Duration);
 			}
 
 			return sum;

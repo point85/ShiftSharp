@@ -30,7 +30,7 @@ namespace Point85.ShiftSharp.Schedule
 {
 	/// <summary>
 	/// Class WorkSchedule represents a named group of teams who collectively work
-	/// one or more shifts with off-shift periods.A work schedule can have periods
+	/// one or more Shifts with off-shift periods.A work schedule can have periods
 	/// of non-working time.
 	/// </summary>
 	public class WorkSchedule : Named
@@ -45,13 +45,13 @@ namespace Point85.ShiftSharp.Schedule
 		private DateTimeZone ZONE_ID = DateTimeZone.Utc;
 
 		// list of teams
-		private List<Team> teams = new List<Team>();
+		public List<Team> Teams { get; private set; } = new List<Team>();
 
-		// list of shifts
-		private List<Shift> shifts = new List<Shift>();
+		// list of Shifts
+		public List<Shift> Shifts { get; private set; } = new List<Shift>();
 
 		// holidays and planned downtime
-		private List<NonWorkingPeriod> nonWorkingPeriods = new List<NonWorkingPeriod>();
+		public List<NonWorkingPeriod> NonWorkingPeriods { get; private set; } = new List<NonWorkingPeriod>();
 
 		public WorkSchedule() : base()
 		{
@@ -88,20 +88,10 @@ namespace Point85.ShiftSharp.Schedule
 		 */
 		public void DeleteTeam(Team team)
 		{
-			if (teams.Contains(team))
+			if (Teams.Contains(team))
 			{
-				teams.Remove(team);
+				Teams.Remove(team);
 			}
-		}
-
-		/**
-		 * Get all teams
-		 * 
-		 * @return List of {@link Team}
-		 */
-		public List<Team> GetTeams()
-		{
-			return this.teams;
 		}
 
 		/**
@@ -112,20 +102,10 @@ namespace Point85.ShiftSharp.Schedule
 		 */
 		public void DeleteNonWorkingPeriod(NonWorkingPeriod period)
 		{
-			if (this.nonWorkingPeriods.Contains(period))
+			if (this.NonWorkingPeriods.Contains(period))
 			{
-				this.nonWorkingPeriods.Remove(period);
+				this.NonWorkingPeriods.Remove(period);
 			}
-		}
-
-		/**
-		 * Get all non-working periods in the schedule
-		 * 
-		 * @return List of {@link NonWorkingPeriod}
-		 */
-		public List<NonWorkingPeriod> GetNonWorkingPeriods()
-		{
-			return this.nonWorkingPeriods;
 		}
 
 		/**
@@ -142,11 +122,8 @@ namespace Point85.ShiftSharp.Schedule
 		{
 			List<ShiftInstance> workingShifts = new List<ShiftInstance>();
 
-			// non working periods
-			List<NonWorkingPeriod> nonWorkingPeriods = GetNonWorkingPeriods();
-
 			// for each team see if there is a working shift
-			foreach (Team team in teams)
+			foreach (Team team in Teams)
 			{
 				ShiftInstance instance = team.GetShiftInstanceForDay(day);
 
@@ -160,7 +137,7 @@ namespace Point85.ShiftSharp.Schedule
 
 				LocalDate startDate = instance.StartDateTime.Date;
 
-				foreach (NonWorkingPeriod nonWorkingPeriod in nonWorkingPeriods)
+				foreach (NonWorkingPeriod nonWorkingPeriod in NonWorkingPeriods)
 				{
 					if (nonWorkingPeriod.IsInPeriod(startDate))
 					{
@@ -226,14 +203,14 @@ namespace Point85.ShiftSharp.Schedule
 		{
 			Team team = new Team(name, description, rotation, rotationStart);
 
-			if (teams.Contains(team))
+			if (Teams.Contains(team))
 			{
 				string msg = String.Format(WorkSchedule.GetMessage("team.already.exists"), name);
 				throw new Exception(msg);
 			}
 
-			teams.Add(team);
-			team.SetWorkSchedule(this);
+			Teams.Add(team);
+			team.WorkSchedule = this;
 			return team;
 		}
 
@@ -256,12 +233,12 @@ namespace Point85.ShiftSharp.Schedule
 		{
 			Shift shift = new Shift(name, description, start, duration);
 
-			if (shifts.Contains(shift))
+			if (Shifts.Contains(shift))
 			{
 				string msg = String.Format(WorkSchedule.GetMessage("shift.already.exists"), name);
 				throw new Exception(msg);
 			}
-			shifts.Add(shift);
+			Shifts.Add(shift);
 			shift.WorkSchedule = this;
 			return shift;
 		}
@@ -276,17 +253,17 @@ namespace Point85.ShiftSharp.Schedule
 		 */
 		public void DeleteShift(Shift shift)
 		{
-			if (!shifts.Contains(shift))
+			if (!Shifts.Contains(shift))
 			{
 				return;
 			}
 
 			// can't be in use
-			foreach (Shift inUseShift in shifts)
+			foreach (Shift inUseShift in Shifts)
 			{
-				foreach (Team team in teams)
+				foreach (Team team in Teams)
 				{
-					Rotation rotation = team.GetRotation();
+					Rotation rotation = team.Rotation;
 
 					foreach (TimePeriod period in rotation.GetPeriods())
 					{
@@ -299,7 +276,7 @@ namespace Point85.ShiftSharp.Schedule
 				}
 			}
 
-			shifts.Remove(shift);
+			Shifts.Remove(shift);
 		}
 
 		/**
@@ -322,15 +299,15 @@ namespace Point85.ShiftSharp.Schedule
 		{
 			NonWorkingPeriod period = new NonWorkingPeriod(name, description, startDateTime, duration);
 
-			if (nonWorkingPeriods.Contains(period))
+			if (NonWorkingPeriods.Contains(period))
 			{
 				string msg = String.Format(WorkSchedule.GetMessage("nonworking.period.already.exists"), name);
 				throw new Exception(msg);
 			}
 			period.WorkSchedule = this;
-			nonWorkingPeriods.Add(period);
+			NonWorkingPeriods.Add(period);
 
-			nonWorkingPeriods.Sort();
+			NonWorkingPeriods.Sort();
 
 			return period;
 		}
@@ -345,7 +322,7 @@ namespace Point85.ShiftSharp.Schedule
 		{
 			Duration sum = Duration.Zero;
 
-			foreach (Team team in teams)
+			foreach (Team team in Teams)
 			{
 				sum = sum.Plus(team.GetRotationDuration());
 			}
@@ -361,9 +338,9 @@ namespace Point85.ShiftSharp.Schedule
 		{
 			Duration sum = Duration.Zero;
 
-			foreach (Team team in teams)
+			foreach (Team team in Teams)
 			{
-				sum = sum.Plus(team.GetRotation().GetWorkingTime());
+				sum = sum.Plus(team.Rotation.GetWorkingTime());
 			}
 			return sum;
 		}
@@ -385,7 +362,7 @@ namespace Point85.ShiftSharp.Schedule
 			Duration sum = Duration.Zero;
 
 			// now add up scheduled time by team
-			foreach (Team team in GetTeams())
+			foreach (Team team in Teams)
 			{
 				sum = sum.Plus(team.CalculateWorkingTime(from, to));
 			}
@@ -425,7 +402,7 @@ namespace Point85.ShiftSharp.Schedule
 			Instant toInstant = to.InZoneStrictly(ZONE_ID).ToInstant();
 			long toSeconds = toInstant.ToUnixTimeSeconds();
 
-			foreach (NonWorkingPeriod period in GetNonWorkingPeriods())
+			foreach (NonWorkingPeriod period in NonWorkingPeriods)
 			{
 				LocalDateTime start = period.StartDateTime;
 
@@ -474,16 +451,6 @@ namespace Point85.ShiftSharp.Schedule
 		}
 
 		/**
-		 * Get the list of shifts in this schedule
-		 * 
-		 * @return List of {@link Shift}
-		 */
-		public List<Shift> GetShifts()
-		{
-			return shifts;
-		}
-
-		/**
 		 * Print shift instances
 		 * 
 		 * @param start
@@ -507,13 +474,13 @@ namespace Point85.ShiftSharp.Schedule
 
 			for (long i = 0; i < days; i++)
 			{
-				Console.WriteLine("[" + (i + 1) + "] " + GetMessage("shifts.day") + ": " + day);
+				Console.WriteLine("[" + (i + 1) + "] " + GetMessage("Shifts.day") + ": " + day);
 
 				List<ShiftInstance> instances = GetShiftInstancesForDay(day);
 
 				if (instances.Count == 0)
 				{
-					Console.WriteLine("   " + GetMessage("shifts.non.working"));
+					Console.WriteLine("   " + GetMessage("Shifts.non.working"));
 				}
 				else
 				{
@@ -538,7 +505,7 @@ namespace Point85.ShiftSharp.Schedule
 			string sch = GetMessage("schedule");
 			string rd = GetMessage("rotation.duration");
 			string sw = GetMessage("schedule.working");
-			string sf = GetMessage("schedule.shifts");
+			string sf = GetMessage("schedule.Shifts");
 			string st = GetMessage("schedule.teams");
 			string sc = GetMessage("schedule.coverage");
 			string sn = GetMessage("schedule.non");
@@ -549,10 +516,10 @@ namespace Point85.ShiftSharp.Schedule
 			{
 				text += "\n" + rd + ": " + GetRotationDuration() + ", " + sw + ": " + GetRotationWorkingTime();
 
-				// shifts
+				// Shifts
 				text += "\n" + sf + ": ";
 				int count = 1;
-				foreach (Shift shift in GetShifts())
+				foreach (Shift shift in Shifts)
 				{
 					text += "\n   (" + count + ") " + shift;
 					count++;
@@ -562,7 +529,7 @@ namespace Point85.ShiftSharp.Schedule
 				text += "\n" + st + ": ";
 				count = 1;
 				float teamPercent = 0.0f;
-				foreach (Team team in GetTeams())
+				foreach (Team team in Teams)
 				{
 					text += "\n   (" + count + ") " + team;
 					teamPercent += team.GetPercentageWorked();
@@ -571,7 +538,7 @@ namespace Point85.ShiftSharp.Schedule
 				text += "\n" + sc + ": " + teamPercent.ToString("0.00") + "%";
 
 				// non-working periods
-				List<NonWorkingPeriod> periods = GetNonWorkingPeriods();
+				List<NonWorkingPeriod> periods = NonWorkingPeriods;
 
 				if (periods.Count > 0)
 				{

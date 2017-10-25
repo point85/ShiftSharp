@@ -55,7 +55,7 @@ namespace Point85.ShiftSharp.Schedule
 		 */
 		public LocalDateTime GetEndTime()
 		{
-			Duration duration = Shift.GetDuration();
+			Duration duration = Shift.Duration;
 			return StartDateTime.PlusSeconds((long)duration.TotalSeconds);
 		}
 

@@ -36,10 +36,10 @@ namespace Point85.ShiftSharp.Schedule
 		private const int SECONDS_PER_DAY = 24 * 60 * 60;
 
 		// starting time of day from midnight 
-		private LocalTime startTime;
+		public LocalTime StartTime { get; set; }
 
 		// length of time period
-		private Duration duration;
+		public Duration Duration { get; set; }
 
 		protected TimePeriod() : base()
 		{
@@ -47,25 +47,11 @@ namespace Point85.ShiftSharp.Schedule
 
 		protected TimePeriod(string name, string description, LocalTime startTime, Duration duration) : base(name, description)
 		{
-			SetStart(startTime);
-			SetDuration(duration);
-		}
+			if (startTime == null)
+			{
+				throw new Exception(WorkSchedule.GetMessage("start.not.defined"));
+			}
 
-		/// <summary>
-		/// Get the period duration
-		/// </summary>
-		/// <returns></returns>
-		public Duration GetDuration()
-		{
-			return duration;
-		}
-
-		/// <summary>
-		/// Set the duration
-		/// </summary>
-		/// <param name="duration">Duration</param>
-		public void SetDuration(Duration duration)
-		{
 			if (duration == null || duration.TotalSeconds == 0)
 			{
 				throw new Exception(WorkSchedule.GetMessage("duration.not.defined"));
@@ -75,29 +61,9 @@ namespace Point85.ShiftSharp.Schedule
 			{
 				throw new Exception(WorkSchedule.GetMessage("duration.not.allowed"));
 			}
-			this.duration = duration;
-		}
 
-		/// <summary>
-		/// Get period start time
-		/// </summary>
-		/// <returns></returns>
-		public LocalTime GetStart()
-		{
-			return startTime;
-		}
-
-		/// <summary>
-		/// Set period start time
-		/// </summary>
-		/// <param name="startTime">Start time</param>
-		public void SetStart(LocalTime startTime)
-		{
-			if (startTime == null)
-			{
-				throw new Exception(WorkSchedule.GetMessage("start.not.defined"));
-			}
-			this.startTime = startTime;
+			this.StartTime = startTime;
+			this.Duration = duration;
 		}
 
 		/// <summary>
@@ -106,7 +72,7 @@ namespace Point85.ShiftSharp.Schedule
 		/// <returns>Period end time</returns>
 		public LocalTime GetEnd()
 		{
-			return startTime.PlusSeconds((long)duration.TotalSeconds);
+			return StartTime.PlusSeconds((long)Duration.TotalSeconds);
 		}
 
 		// breaks are considered to be in the shift's working period
@@ -134,14 +100,12 @@ namespace Point85.ShiftSharp.Schedule
 
 			try
 			{
-				text = base.ToString() + ", " + start + ": " + GetStart() + " (" + GetDuration() + ")" + ", " + end + ": "
+				text = base.ToString() + ", " + start + ": " + StartTime + " (" + Duration + ")" + ", " + end + ": "
 						+ GetEnd();
 			}
 			catch (Exception)
 			{
-				// ignore
 			}
-
 			return text;
 		}
 	}

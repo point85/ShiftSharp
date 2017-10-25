@@ -152,7 +152,7 @@ namespace Point85.ShiftSharp.Schedule
 			{
 				if (period.IsWorkingPeriod())
 				{
-					sum = sum.Plus(period.GetDuration());
+					sum = sum.Plus(period.Duration);
 				}
 			}
 			return sum;

@@ -56,12 +56,12 @@ namespace TestShiftSharp
 
 		private void TestShifts(WorkSchedule ws)
 		{
-			Assert.IsTrue(ws.GetShifts().Count > 0);
+			Assert.IsTrue(ws.Shifts.Count > 0);
 
-			foreach (Shift shift in ws.GetShifts())
+			foreach (Shift shift in ws.Shifts)
 			{
-				Duration total = shift.GetDuration();
-				LocalTime start = shift.GetStart();
+				Duration total = shift.Duration;
+				LocalTime start = shift.StartTime;
 				LocalTime end = shift.GetEnd();
 
 				Assert.IsTrue(shift.Name.Length > 0);
@@ -127,7 +127,7 @@ namespace TestShiftSharp
 					LocalTime t = start.Minus(Period.FromMinutes(1));
 					worked = shift.CalculateWorkingTime(t, end);
 
-					if (!total.Equals(shift.GetDuration()))
+					if (!total.Equals(shift.Duration))
 					{
 						Assert.Fail("Bad working time");
 					}
@@ -140,7 +140,7 @@ namespace TestShiftSharp
 				{
 					LocalTime t = end.Plus(Period.FromMinutes(1));
 					worked = shift.CalculateWorkingTime(start, t);
-					if (!total.Equals(shift.GetDuration()))
+					if (!total.Equals(shift.Duration))
 					{
 						Assert.Fail("Bad working time");
 					}
@@ -153,31 +153,31 @@ namespace TestShiftSharp
 
 		private void TestTeams(WorkSchedule ws, Duration hoursPerRotation, Duration rotationDays)
 		{
-			Assert.IsTrue(ws.GetTeams().Count > 0);
+			Assert.IsTrue(ws.Teams.Count > 0);
 
-			foreach (Team team in ws.GetTeams())
+			foreach (Team team in ws.Teams)
 			{
 				Assert.IsTrue(team.Name.Length > 0);
 				Assert.IsTrue(team.Description.Length > 0);
-				Assert.IsTrue(team.GetDayInRotation(team.GetRotationStart()) == 1);
-				Duration hours = team.GetRotation().GetWorkingTime();
+				Assert.IsTrue(team.GetDayInRotation(team.RotationStart) == 1);
+				Duration hours = team.Rotation.GetWorkingTime();
 				Assert.IsTrue(hours.Equals(hoursPerRotation));
 				Assert.IsTrue(team.GetPercentageWorked() > 0.0f);
 				Assert.IsTrue(team.GetRotationDuration().Equals(rotationDays));
-				Assert.IsTrue(team.GetRotationStart() != null);
+				Assert.IsTrue(team.RotationStart != null);
 
-				Rotation rotation = team.GetRotation();
+				Rotation rotation = team.Rotation;
 				Assert.IsTrue(rotation.GetDuration().Equals(rotationDays));
 				Assert.IsTrue(rotation.GetPeriods().Count > 0);
 				Assert.IsTrue(rotation.GetWorkingTime().TotalSeconds <= rotation.GetDuration().TotalSeconds);
 			}
 
-			Assert.IsTrue(ws.GetNonWorkingPeriods() != null);
+			Assert.IsTrue(ws.NonWorkingPeriods != null);
 		}
 
 		private void TestShiftInstances(WorkSchedule ws, LocalDate instanceReference)
 		{
-			Rotation rotation = ws.GetTeams()[0].GetRotation();
+			Rotation rotation = ws.Teams[0].Rotation;
 
 			// shift instances
 			LocalDate startDate = instanceReference;
@@ -198,13 +198,13 @@ namespace TestShiftSharp
 					Assert.IsTrue(instance.Team != null);
 
 					Shift shift = instance.Shift;
-					LocalTime startTime = shift.GetStart();
+					LocalTime startTime = shift.StartTime;
 					LocalTime endTime = shift.GetEnd();
 
 					Assert.IsTrue(shift.IsInShift(startTime));
 					Assert.IsTrue(shift.IsInShift(startTime.PlusSeconds(1)));
 
-					Duration shiftDuration = instance.Shift.GetDuration();
+					Duration shiftDuration = instance.Shift.Duration;
 
 					// midnight is special case
 					if (!shiftDuration.Equals(Duration.FromHours(24)))
@@ -270,7 +270,7 @@ namespace TestShiftSharp
 
 			Assert.IsTrue(ws.Name.Length > 0);
 			Assert.IsTrue(ws.Description.Length > 0);
-			Assert.IsTrue(ws.GetNonWorkingPeriods() != null);
+			Assert.IsTrue(ws.NonWorkingPeriods != null);
 
 			// shifts
 			TestShifts(ws);
@@ -290,31 +290,31 @@ namespace TestShiftSharp
 		private void TestDeletions()
 		{
 			// team deletions
-			Team[] teams = schedule.GetTeams().ToArray();
+			Team[] teams = schedule.Teams.ToArray();
 
 			foreach (Team team in teams)
 			{
 				schedule.DeleteTeam(team);
 			}
-			Assert.IsTrue(schedule.GetTeams().Count == 0);
+			Assert.IsTrue(schedule.Teams.Count == 0);
 
 			// shift deletions
-			Shift[] shifts = schedule.GetShifts().ToArray();
+			Shift[] shifts = schedule.Shifts.ToArray();
 
 			foreach (Shift shift in shifts)
 			{
 				schedule.DeleteShift(shift);
 			}
-			Assert.IsTrue(schedule.GetShifts().Count == 0);
+			Assert.IsTrue(schedule.Shifts.Count == 0);
 
 			// non-working period deletions
-			NonWorkingPeriod[] periods = schedule.GetNonWorkingPeriods().ToArray();
+			NonWorkingPeriod[] periods = schedule.NonWorkingPeriods.ToArray();
 
 			foreach (NonWorkingPeriod period in periods)
 			{
 				schedule.DeleteNonWorkingPeriod(period);
 			}
-			Assert.IsTrue(schedule.GetNonWorkingPeriods().Count == 0);
+			Assert.IsTrue(schedule.NonWorkingPeriods.Count == 0);
 		}
 	}
 }
