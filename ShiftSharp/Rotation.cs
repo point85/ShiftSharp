@@ -34,6 +34,11 @@ namespace Point85.ShiftSharp.Schedule
 	public class Rotation : Named, IComparable<Rotation>
 	{
 		/// <summary>
+		/// owning work schedule
+		/// </summary>
+		public WorkSchedule WorkSchedule { get; internal set; }
+
+		/// <summary>
 		/// working periods in the rotation
 		/// </summary>
 		public List<RotationSegment> RotationSegments { get; private set; } = new List<RotationSegment>();
@@ -75,7 +80,7 @@ namespace Point85.ShiftSharp.Schedule
 		/// </summary>
 		/// <param name="name">name of rotation</param>
 		/// <param name="description">description of rotation</param>
-		public Rotation(string name, string description) : base(name, description)
+		internal Rotation(string name, string description) : base(name, description)
 		{
 		}
 

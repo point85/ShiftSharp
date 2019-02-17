@@ -55,6 +55,11 @@ namespace Point85.ShiftSharp.Schedule
 		public List<Shift> Shifts { get; private set; } = new List<Shift>();
 
 		/// <summary>
+		/// list of Rotations
+		/// </summary>
+		public List<Rotation> Rotations { get; private set; } = new List<Rotation>();
+
+		/// <summary>
 		/// holidays and planned downtime
 		/// </summary>
 		public List<NonWorkingPeriod> NonWorkingPeriods { get; private set; } = new List<NonWorkingPeriod>();
@@ -217,6 +222,26 @@ namespace Point85.ShiftSharp.Schedule
 			Shifts.Add(shift);
 			shift.WorkSchedule = this;
 			return shift;
+		}
+
+		/// <summary>
+		/// Create a rotation
+		/// </summary>
+		/// <param name="name">Name</param>
+		/// <param name="description">Description</param>
+		/// <returns>Rotation</returns>
+		public Rotation CreateRotation(string name, string description)
+		{
+			Rotation rotation = new Rotation(name, description);
+
+			if (Rotations.Contains(rotation))
+			{
+				string msg = String.Format(WorkSchedule.GetMessage("rotation.already.exists"), name);
+				throw new Exception(msg);
+			}
+			Rotations.Add(rotation);
+			rotation.WorkSchedule = this;
+			return rotation;
 		}
 
 		/// <summary>

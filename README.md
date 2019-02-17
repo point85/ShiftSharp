@@ -224,7 +224,8 @@ ShiftSharp depends upon .Net Framework 4.5+ due to use of the NodaTime date and 
 
 ShiftSharp has the following structure:
  * `/Documentation/html` Doxygen HTML files
- * `/bin/Release` compiled ShiftSharp.dll 
  * `.` - C# source files
  * `/Resources` - localizable Message.properties file to define error messages.
  * `../TestShiftSharp` - unit test C# project
+ 
+The compiled ShiftSharp.dll can be found under the "resources" link.

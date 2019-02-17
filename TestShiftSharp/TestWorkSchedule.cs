@@ -48,23 +48,23 @@ namespace TestShiftSharp
 			Shift night = schedule.CreateShift("Night", "Night shift", new LocalTime(18, 0, 0), Duration.FromHours(12));
 
 			// day rotation
-			Rotation dayRotation = new Rotation("Day", "Day");
+			Rotation dayRotation = schedule.CreateRotation("Day", "Day");
 			dayRotation.AddSegment(day, 3, 4);
 			dayRotation.AddSegment(day, 4, 3);
 
 			// inverse day rotation (day + 3 days)
-			Rotation inverseDayRotation = new Rotation("Inverse Day", "Inverse Day");
+			Rotation inverseDayRotation = schedule.CreateRotation("Inverse Day", "Inverse Day");
 			inverseDayRotation.AddSegment(day, 0, 3);
 			inverseDayRotation.AddSegment(day, 4, 4);
 			inverseDayRotation.AddSegment(day, 3, 0);
 
 			// night rotation
-			Rotation nightRotation = new Rotation("Night", "Night");
+			Rotation nightRotation = schedule.CreateRotation("Night", "Night");
 			nightRotation.AddSegment(night, 4, 3);
 			nightRotation.AddSegment(night, 3, 4);
 
 			// inverse night rotation
-			Rotation inverseNightRotation = new Rotation("Inverse Night", "Inverse Night");
+			Rotation inverseNightRotation = schedule.CreateRotation("Inverse Night", "Inverse Night");
 			inverseNightRotation.AddSegment(night, 0, 4);
 			inverseNightRotation.AddSegment(night, 3, 3);
 			inverseNightRotation.AddSegment(night, 4, 0);
@@ -88,7 +88,7 @@ namespace TestShiftSharp
 			// shift, start at 08:00 for 9 hours
 			Shift day = schedule.CreateShift("Day", "day shift", new LocalTime(8, 0, 0), Duration.FromHours(9));
 
-			Rotation rotation = new Rotation("Day", "Day");
+			Rotation rotation = schedule.CreateRotation("Day", "Day");
 			rotation.AddSegment(day, 3, 7);
 			rotation.AddSegment(day, 1, 7);
 			rotation.AddSegment(day, 1, 7);
@@ -118,7 +118,7 @@ namespace TestShiftSharp
 			Shift shift = schedule.CreateShift("24 Hours", "24 hour shift", new LocalTime(7, 0, 0), Duration.FromHours(24));
 
 			// 1 day ON, 4 OFF, 1 ON, 2 OFF
-			Rotation rotation = new Rotation("24 Hours", "24 Hours");
+			Rotation rotation = schedule.CreateRotation("24 Hours", "24 Hours");
 			rotation.AddSegment(shift, 1, 4);
 			rotation.AddSegment(shift, 1, 2);
 
@@ -140,7 +140,7 @@ namespace TestShiftSharp
 			Shift shift = schedule.CreateShift("24 Hour", "24 hour shift", new LocalTime(7, 0, 0), Duration.FromHours(24));
 
 			// 2 days ON, 2 OFF, 2 ON, 2 OFF, 2 ON, 8 OFF
-			Rotation rotation = new Rotation("24 Hour", "2 days ON, 2 OFF, 2 ON, 2 OFF, 2 ON, 8 OFF");
+			Rotation rotation = schedule.CreateRotation("24 Hour", "2 days ON, 2 OFF, 2 ON, 2 OFF, 2 ON, 8 OFF");
 			rotation.AddSegment(shift, 2, 2);
 			rotation.AddSegment(shift, 2, 2);
 			rotation.AddSegment(shift, 2, 8);
@@ -178,11 +178,11 @@ namespace TestShiftSharp
 			Shift night = schedule.CreateShift("Night", "Night shift", new LocalTime(19, 0, 0), Duration.FromHours(12));
 
 			// 7 days ON, 7 OFF
-			Rotation dayRotation = new Rotation("Day", "Day");
+			Rotation dayRotation = schedule.CreateRotation("Day", "Day");
 			dayRotation.AddSegment(day, 7, 7);
 
 			// 7 nights ON, 7 OFF
-			Rotation nightRotation = new Rotation("Night", "Night");
+			Rotation nightRotation = schedule.CreateRotation("Night", "Night");
 			nightRotation.AddSegment(night, 7, 7);
 
 			schedule.CreateTeam("A", "A day shift", dayRotation, new LocalDate(2014, 1, 2));
@@ -228,11 +228,11 @@ namespace TestShiftSharp
 			Shift shift2 = schedule.CreateShift("Shift2", "Shift #2", shift2Start, shiftDuration);
 
 			// shift 1, 5 days ON, 2 OFF
-			Rotation rotation1 = new Rotation("Shift1", "Shift1");
+			Rotation rotation1 = schedule.CreateRotation("Shift1", "Shift1");
 			rotation1.AddSegment(shift1, 5, 2);
 
 			// shift 2, 5 days ON, 2 OFF
-			Rotation rotation2 = new Rotation("Shift2", "Shift2");
+			Rotation rotation2 = schedule.CreateRotation("Shift2", "Shift2");
 			rotation2.AddSegment(shift2, 5, 2);
 
 			LocalDate startRotation = new LocalDate(2016, 1, 1);
@@ -405,7 +405,7 @@ namespace TestShiftSharp
 			{
 			}
 
-			Rotation rotation = new Rotation("Rotation", "Rotation");
+			Rotation rotation = schedule.CreateRotation("Rotation", "Rotation");
 			rotation.AddSegment(shift, 5, 2);
 
 			LocalDate startRotation = new LocalDate(2016, 12, 31);
@@ -698,7 +698,7 @@ namespace TestShiftSharp
 
 			Shift shift = schedule.CreateShift("Team Shift1", "Team shift 1", shiftStart, shiftDuration);
 
-			Rotation rotation = new Rotation("Team", "Rotation");
+			Rotation rotation = schedule.CreateRotation("Team", "Rotation");
 			rotation.AddSegment(shift, 1, 1);
 
 			LocalDate startRotation = new LocalDate(2017, 1, 1);
@@ -751,7 +751,7 @@ namespace TestShiftSharp
 			shiftStart = new LocalTime(18, 0, 0);
 			Shift shift2 = schedule.CreateShift("Team Shift2", "Team shift 2", shiftStart, shiftDuration);
 
-			Rotation rotation2 = new Rotation("Case 8", "Case 8");
+			Rotation rotation2 = schedule.CreateRotation("Case 8", "Case 8");
 			rotation2.AddSegment(shift2, 1, 1);
 
 			Team team2 = schedule.CreateTeam("Team2", "Team 2", rotation2, startRotation);
@@ -876,7 +876,7 @@ namespace TestShiftSharp
 
 			Shift shift = schedule.CreateShift("Work Shift1", "Working time shift", shiftStart, shiftDuration);
 
-			Rotation rotation = new Rotation("Case 10", "Case10");
+			Rotation rotation = schedule.CreateRotation("Case 10", "Case10");
 			rotation.AddSegment(shift, 1, 1);
 
 			LocalDate startRotation = new LocalDate(2017, 1, 1);
@@ -918,7 +918,7 @@ namespace TestShiftSharp
 			Shift night = schedule.CreateShift("Night", "Night shift", new LocalTime(22, 0, 0), Duration.FromHours(14));
 
 			// Team 4-day rotation
-			Rotation rotation = new Rotation("4 Team", "4 Team");
+			Rotation rotation = schedule.CreateRotation("4 Team", "4 Team");
 			rotation.AddSegment(day, 1, 0);
 			rotation.AddSegment(crossover, 1, 0);
 			rotation.AddSegment(night, 1, 1);
