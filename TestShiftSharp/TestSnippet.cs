@@ -37,7 +37,7 @@ namespace TestShiftSharp
 		[TestMethod]
 		public void TestPartial()
 		{
-
 		}
 	}
 }
+ 

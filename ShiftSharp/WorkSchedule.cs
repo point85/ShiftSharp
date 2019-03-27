@@ -42,7 +42,7 @@ namespace Point85.ShiftSharp.Schedule
 		internal static PropertyManager MessagesManager = new PropertyManager(MESSAGE_RESOURCE_NAME);
 
 		// cached time zone for working time calculations
-		private DateTimeZone ZONE_ID = DateTimeZone.Utc;
+		private readonly DateTimeZone ZONE_ID = DateTimeZone.Utc;
 
 		/// <summary>
 		/// list of teams
@@ -157,6 +157,32 @@ namespace Point85.ShiftSharp.Schedule
 		}
 
 		/// <summary>
+		/// Get the list of shift instances for the specified date that start in that date 
+		/// or cross over from midnight the previous day
+		/// </summary>
+		/// <param name="day">Date</param>
+		/// <returns>List of shift instances</returns>
+		public List<ShiftInstance> GetAllShiftInstancesForDay(LocalDate day)
+		{
+			// starting in this day
+			List<ShiftInstance> workingShifts = GetShiftInstancesForDay(day);
+
+			// now check previous day
+			LocalDate yesterday = day.PlusDays(-1);
+
+			foreach (ShiftInstance instance in GetShiftInstancesForDay(yesterday)) {
+				if (instance.GetEndTime().Date.Equals(day)) {
+				// shift ends in this day
+				workingShifts.Add(instance);
+				}
+			}
+
+			workingShifts.Sort();
+
+			return workingShifts;
+		}
+
+		/// <summary>
 		/// Get the list of shift instances for the specified date and time of day
 		/// </summary>
 		/// <param name="dateTime">Date and time of day</param>
@@ -165,17 +191,19 @@ namespace Point85.ShiftSharp.Schedule
 		{
 			List<ShiftInstance> workingShifts = new List<ShiftInstance>();
 
-			// day
-			List<ShiftInstance> candidateShifts = GetShiftInstancesForDay(dateTime.Date);
+			// shifts from this date and yesterday
+			List<ShiftInstance> candidateShifts = GetAllShiftInstancesForDay(dateTime.Date);
 
-			// check time now
 			foreach (ShiftInstance instance in candidateShifts)
 			{
-				if (instance.Shift.IsInShift(dateTime.TimeOfDay))
+				if (instance.IsInShiftInstance(dateTime))
 				{
 					workingShifts.Add(instance);
 				}
 			}
+
+			workingShifts.Sort();
+
 			return workingShifts;
 		}
 
@@ -431,7 +459,7 @@ namespace Point85.ShiftSharp.Schedule
 		/// <param name="end">Ending date</param>
 		public void PrintShiftInstances(LocalDate start, LocalDate end)
 		{
-			if (start.CompareTo(end) < 0)
+			if (start.CompareTo(end) > 0)
 			{
 				string msg = String.Format(WorkSchedule.GetMessage("end.earlier.than.start"), start, end);
 				throw new Exception(msg);

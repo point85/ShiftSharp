@@ -40,7 +40,7 @@ namespace TestShiftSharp
 		protected LocalDate referenceDate = new LocalDate(2016, 10, 31);
 
 		// partial test flags
-		protected static bool testToString = false;
+		protected static bool testToString = true;
 
 		protected static bool testDeletions = true;
 
@@ -257,7 +257,7 @@ namespace TestShiftSharp
 			}
 		}
 
-		protected void runBaseTest(WorkSchedule ws, Duration hoursPerRotation, Duration rotationDays,
+		protected void RunBaseTest(WorkSchedule ws, Duration hoursPerRotation, Duration rotationDays,
 				LocalDate instanceReference)
 		{
 
@@ -279,7 +279,7 @@ namespace TestShiftSharp
 			TestTeams(ws, hoursPerRotation, rotationDays);
 
 			// shift instances
-			TestShiftInstances(ws, instanceReference);
+			TestShiftInstances(ws, instanceReference.PlusDays(rotationDays.Days));
 
 			if (testDeletions)
 			{

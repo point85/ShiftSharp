@@ -75,6 +75,23 @@ namespace Point85.ShiftSharp.Schedule
 		}
 
 		/// <summary>
+		/// Determine if this time falls within the shift instance period
+		/// </summary>
+		/// <param name="ldt">Date and time to check</param>
+		/// <returns>True if the specified time is in this shift instance</returns>
+		public Boolean IsInShiftInstance(LocalDateTime ldt)
+		{
+			if (ldt.CompareTo(StartDateTime) >= 0 && ldt.CompareTo(GetEndTime()) <= 0)
+			{
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+		}
+
+		/// <summary>
 		/// Build a string representation of a shift instance
 		/// </summary>
 		/// <returns>String</returns>

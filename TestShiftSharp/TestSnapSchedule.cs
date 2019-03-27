@@ -63,7 +63,7 @@ namespace TestShiftSharp
 			schedule.CreateTeam("Team5", "Fifth team", rotation, referenceDate.PlusDays(-14));
 			schedule.CreateTeam("Team6", "Sixth team", rotation, referenceDate.PlusDays(-35));
 
-			runBaseTest(schedule, Duration.FromHours(224), Duration.FromDays(42), referenceDate);
+			RunBaseTest(schedule, Duration.FromHours(224), Duration.FromDays(42), referenceDate);
 		}
 
 		[TestMethod]
@@ -87,7 +87,7 @@ namespace TestShiftSharp
 			schedule.CreateTeam("Team2", "Second team", rotation, referenceDate.PlusDays(-3));
 			schedule.CreateTeam("Team3", "Third team", rotation, referenceDate.PlusDays(-6));
 
-			runBaseTest(schedule, Duration.FromHours(72), Duration.FromDays(9), referenceDate);
+			RunBaseTest(schedule, Duration.FromHours(72), Duration.FromDays(9), referenceDate);
 		}
 
 		[TestMethod]
@@ -116,7 +116,7 @@ namespace TestShiftSharp
 			schedule.CreateTeam("Team1", "First team", rotation, referenceDate);
 			schedule.CreateTeam("Team2", "Second team", rotation, referenceDate.PlusDays(-14));
 
-			runBaseTest(schedule, Duration.FromHours(160), Duration.FromDays(28), referenceDate);
+			RunBaseTest(schedule, Duration.FromHours(160), Duration.FromDays(28), referenceDate);
 		}
 
 		[TestMethod]
@@ -136,7 +136,7 @@ namespace TestShiftSharp
 			// 1 team, 1 shift
 			schedule.CreateTeam("Team", "One team", rotation, referenceDate);
 
-			runBaseTest(schedule, Duration.FromHours(40), Duration.FromDays(7), referenceDate);
+			RunBaseTest(schedule, Duration.FromHours(40), Duration.FromDays(7), referenceDate);
 		}
 
 		[TestMethod]
@@ -178,7 +178,7 @@ namespace TestShiftSharp
 			schedule.CreateTeam("Team 3", "Third team", rotation, referenceDate.PlusDays(-14));
 			schedule.CreateTeam("Team 4", "Fourth team", rotation, referenceDate.PlusDays(-21));
 
-			runBaseTest(schedule, Duration.FromHours(168), Duration.FromDays(28), referenceDate);
+			RunBaseTest(schedule, Duration.FromHours(168), Duration.FromDays(28), referenceDate);
 		}
 
 		[TestMethod]
@@ -211,7 +211,7 @@ namespace TestShiftSharp
 			schedule.CreateTeam("Team 3", "Third team", rotation, referenceDate.PlusDays(-2));
 			schedule.CreateTeam("Team 4", "Forth team", rotation, referenceDate.PlusDays(-1));
 
-			runBaseTest(schedule, Duration.FromMinutes(2610), Duration.FromDays(4), referenceDate);
+			RunBaseTest(schedule, Duration.FromMinutes(2610), Duration.FromDays(4), referenceDate);
 		}
 
 		[TestMethod]
@@ -243,7 +243,7 @@ namespace TestShiftSharp
 			schedule.CreateTeam("Team 3", "Third team", rotation, referenceDate.PlusDays(-14));
 			schedule.CreateTeam("Team 4", "Forth team", rotation, referenceDate.PlusDays(-21));
 
-			runBaseTest(schedule, Duration.FromHours(168), Duration.FromDays(28), referenceDate);
+			RunBaseTest(schedule, Duration.FromHours(168), Duration.FromDays(28), referenceDate);
 		}
 
 		[TestMethod]
@@ -274,7 +274,7 @@ namespace TestShiftSharp
 			Duration duration = schedule.CalculateWorkingTime(from, from.PlusDays(3));
 			Assert.IsTrue(duration.Equals(Duration.FromHours(72)));
 
-			runBaseTest(schedule, Duration.FromHours(24), Duration.FromDays(3), referenceDate);
+			RunBaseTest(schedule, Duration.FromHours(24), Duration.FromDays(3), referenceDate);
 		}
 
 		[TestMethod]
@@ -351,7 +351,7 @@ namespace TestShiftSharp
 			schedule.CreateTeam("Team 20", "6th night team", nightRotation, referenceDate.PlusDays(35));
 			schedule.CreateTeam("Team 21", "7th night team", nightRotation, referenceDate.PlusDays(42));
 
-			runBaseTest(schedule, Duration.FromHours(280), Duration.FromDays(49), referenceDate.PlusDays(49));
+			RunBaseTest(schedule, Duration.FromHours(280), Duration.FromDays(49), referenceDate.PlusDays(49));
 
 		}
 
@@ -380,7 +380,7 @@ namespace TestShiftSharp
 			schedule.CreateTeam("Team 1", "First team", team1Rotation, referenceDate);
 			schedule.CreateTeam("Team 2", "Second team", team2Rotation, referenceDate);
 
-			runBaseTest(schedule, Duration.FromHours(12), Duration.FromDays(1), referenceDate);
+			RunBaseTest(schedule, Duration.FromHours(12), Duration.FromDays(1), referenceDate);
 		}
 
 		[TestMethod]
@@ -427,7 +427,7 @@ namespace TestShiftSharp
 			schedule.CreateTeam("Team 3", "Third team", rotation, referenceDate.PlusDays(-7));
 			schedule.CreateTeam("Team 4", "Fourth team", rotation, referenceDate.PlusDays(-35));
 
-			runBaseTest(schedule, Duration.FromHours(336), Duration.FromDays(56), referenceDate);
+			RunBaseTest(schedule, Duration.FromHours(336), Duration.FromDays(56), referenceDate);
 		}
 	}
 }

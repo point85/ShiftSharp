@@ -76,7 +76,7 @@ namespace TestShiftSharp
 			schedule.CreateTeam("C", "Night shift", nightRotation, rotationStart);
 			schedule.CreateTeam("D", "Night inverse shift", inverseNightRotation, rotationStart);
 
-			runBaseTest(schedule, Duration.FromHours(84), Duration.FromDays(14), rotationStart);
+			RunBaseTest(schedule, Duration.FromHours(84), Duration.FromDays(14), rotationStart);
 		}
 
 		[TestMethod]
@@ -105,7 +105,7 @@ namespace TestShiftSharp
 			schedule.CreateTeam("Team E", "E team", rotation, rotationStart.Minus(Period.FromDays(28)));
 			schedule.CreateTeam("Team F", "F team", rotation, rotationStart.Minus(Period.FromDays(35)));
 
-			runBaseTest(schedule, Duration.FromHours(63), Duration.FromDays(42), rotationStart);
+			RunBaseTest(schedule, Duration.FromHours(63), Duration.FromDays(42), rotationStart);
 		}
 
 		[TestMethod]
@@ -127,7 +127,7 @@ namespace TestShiftSharp
 			schedule.CreateTeam("C", "Platoon3", rotation, new LocalDate(2014, 1, 31));
 			schedule.CreateTeam("D", "Platoon4", rotation, new LocalDate(2014, 1, 29));
 
-			runBaseTest(schedule, Duration.FromHours(48), Duration.FromDays(8), new LocalDate(2014, 2, 4));
+			RunBaseTest(schedule, Duration.FromHours(48), Duration.FromDays(8), new LocalDate(2014, 2, 4));
 		}
 
 		[TestMethod]
@@ -161,7 +161,7 @@ namespace TestShiftSharp
 			Assert.IsTrue(instances.Count == 1);
 			Assert.IsTrue(instances[0].Team.Equals(platoon2));
 
-			runBaseTest(schedule, Duration.FromHours(144), Duration.FromDays(18), new LocalDate(2017, 2, 1));
+			RunBaseTest(schedule, Duration.FromHours(144), Duration.FromDays(18), new LocalDate(2017, 2, 1));
 		}
 
 		[TestMethod]
@@ -190,7 +190,7 @@ namespace TestShiftSharp
 			schedule.CreateTeam("C", "C day shift", dayRotation, new LocalDate(2014, 1, 9));
 			schedule.CreateTeam("D", "D night shift", nightRotation, new LocalDate(2014, 1, 9));
 
-			runBaseTest(schedule, Duration.FromHours(84), Duration.FromDays(14), new LocalDate(2014, 1, 9));
+			RunBaseTest(schedule, Duration.FromHours(84), Duration.FromDays(14), new LocalDate(2014, 1, 9));
 		}
 
 		[TestMethod]
@@ -330,7 +330,7 @@ namespace TestShiftSharp
 
 			Assert.IsTrue(!memorialDay.IsInPeriod(new LocalDate(2016, 1, 1)));
 
-			runBaseTest(schedule, Duration.FromHours(40), Duration.FromDays(7), new LocalDate(2016, 1, 1));
+			RunBaseTest(schedule, Duration.FromHours(40), Duration.FromDays(7), new LocalDate(2016, 1, 1));
 
 		}
 
