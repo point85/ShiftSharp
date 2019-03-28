@@ -91,6 +91,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a430823de8c88d9d818c7b55841a96d8a"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_point85_1_1_shift_sharp_1_1_schedule_1_1_shift_instance.html#a430823de8c88d9d818c7b55841a96d8a">CompareTo</a> (<a class="el" href="class_point85_1_1_shift_sharp_1_1_schedule_1_1_shift_instance.html">ShiftInstance</a> other)</td></tr>
 <tr class="memdesc:a430823de8c88d9d818c7b55841a96d8a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compare this non-working period to another such period by start time of day  <a href="#a430823de8c88d9d818c7b55841a96d8a">More...</a><br /></td></tr>
 <tr class="separator:a430823de8c88d9d818c7b55841a96d8a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af906ac709b1296c9061b09fc97e30795"><td class="memItemLeft" align="right" valign="top">Boolean&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_point85_1_1_shift_sharp_1_1_schedule_1_1_shift_instance.html#af906ac709b1296c9061b09fc97e30795">IsInShiftInstance</a> (LocalDateTime ldt)</td></tr>
+<tr class="memdesc:af906ac709b1296c9061b09fc97e30795"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determine if this time falls within the shift instance period  <a href="#af906ac709b1296c9061b09fc97e30795">More...</a><br /></td></tr>
+<tr class="separator:af906ac709b1296c9061b09fc97e30795"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2f71d087d9e98e852fb4c582a4372e4f"><td class="memItemLeft" align="right" valign="top">override string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_point85_1_1_shift_sharp_1_1_schedule_1_1_shift_instance.html#a2f71d087d9e98e852fb4c582a4372e4f">ToString</a> ()</td></tr>
 <tr class="memdesc:a2f71d087d9e98e852fb4c582a4372e4f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Build a string representation of a shift instance  <a href="#a2f71d087d9e98e852fb4c582a4372e4f">More...</a><br /></td></tr>
 <tr class="separator:a2f71d087d9e98e852fb4c582a4372e4f"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -170,6 +173,41 @@ Properties</h2></td></tr>
 
 <p>Get the end date and time of day </p>
 <dl class="section return"><dt>Returns</dt><dd>Ending time</dd></dl>
+
+</div>
+</div>
+<a id="af906ac709b1296c9061b09fc97e30795"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af906ac709b1296c9061b09fc97e30795">&#9670;&nbsp;</a></span>IsInShiftInstance()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">Boolean Point85.ShiftSharp.Schedule.ShiftInstance.IsInShiftInstance </td>
+          <td>(</td>
+          <td class="paramtype">LocalDateTime&#160;</td>
+          <td class="paramname"><em>ldt</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Determine if this time falls within the shift instance period </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">ldt</td><td>Date and time to check</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>True if the specified time is in this shift instance</dd></dl>
 
 </div>
 </div>

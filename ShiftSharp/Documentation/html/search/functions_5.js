@@ -1,5 +1,6 @@
 var searchData=
 [
+  ['getallshiftinstancesforday',['GetAllShiftInstancesForDay',['../class_point85_1_1_shift_sharp_1_1_schedule_1_1_work_schedule.html#a9f71b268ad6712c3bc975c7e5d17cfb6',1,'Point85::ShiftSharp::Schedule::WorkSchedule']]],
   ['getdaycount',['GetDayCount',['../class_point85_1_1_shift_sharp_1_1_schedule_1_1_rotation.html#a93108c8c6cb717643fa956f3b1770896',1,'Point85::ShiftSharp::Schedule::Rotation']]],
   ['getdayinrotation',['GetDayInRotation',['../class_point85_1_1_shift_sharp_1_1_schedule_1_1_team.html#a76bfe5f5743cc441106afc1a574a7689',1,'Point85::ShiftSharp::Schedule::Team']]],
   ['getduration',['GetDuration',['../class_point85_1_1_shift_sharp_1_1_schedule_1_1_rotation.html#a8641b1f7b7ae0043aa3ce1071d482c42',1,'Point85::ShiftSharp::Schedule::Rotation']]],
