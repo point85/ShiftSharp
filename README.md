@@ -227,5 +227,6 @@ ShiftSharp has the following structure:
  * `.` - C# source files
  * `/Resources` - localizable Message.properties file to define error messages.
  * `../TestShiftSharp` - unit test C# project
+ * `../dotnetcore` - csproj files for .NET Core 3.0 framework
  
 The compiled ShiftSharp.dll can be found under the "resources" link.
