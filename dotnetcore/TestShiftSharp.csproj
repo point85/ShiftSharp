@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ShiftSharp\ShiftSharp.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.*" />
+    <PackageReference Include="MSTest.TestAdapter" Version="1.1.18" />
+    <PackageReference Include="MSTest.TestFramework" Version="1.1.18" />
+    <PackageReference Include="NodaTime" Version="2.2.1" />
+  </ItemGroup>
+</Project>
