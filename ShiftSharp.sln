@@ -1,11 +1,10 @@
-﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27004.2005
+# Visual Studio Version 17
+VisualStudioVersion = 17.8.34408.163
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShiftSharp", "ShiftSharp\ShiftSharp.csproj", "{0D3FF948-F5BE-4338-94CB-CDC1A4475159}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShiftSharp", "ShiftSharp\ShiftSharp.csproj", "{0D3FF948-F5BE-4338-94CB-CDC1A4475159}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestShiftSharp", "TestShiftSharp\TestShiftSharp.csproj", "{4EA986B7-7046-4501-B3EE-511FDC84D10E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestShiftSharp", "TestShiftSharp\TestShiftSharp.csproj", "{4EA986B7-7046-4501-B3EE-511FDC84D10E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

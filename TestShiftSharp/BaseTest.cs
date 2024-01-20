@@ -48,7 +48,7 @@ namespace TestShiftSharp
 		protected WorkSchedule schedule;
 
 		[ClassInitialize()]
-		public static void SetFlags()
+		public static void SetFlags(TestContext context)
 		{
 			testToString = true;
 			testDeletions = true;
@@ -69,8 +69,6 @@ namespace TestShiftSharp
 
 				Assert.IsTrue(total.TotalMinutes > 0);
 				Assert.IsTrue(shift.Breaks != null);
-				Assert.IsTrue(start != null);
-				Assert.IsTrue(end != null);
 
 				Duration worked;
 				bool spansMidnight = shift.SpansMidnight();
@@ -164,7 +162,6 @@ namespace TestShiftSharp
 				Assert.IsTrue(hours.Equals(hoursPerRotation));
 				Assert.IsTrue(team.GetPercentageWorked() > 0.0f);
 				Assert.IsTrue(team.GetRotationDuration().Equals(rotationDays));
-				Assert.IsTrue(team.RotationStart != null);
 
 				Rotation rotation = team.Rotation;
 				Assert.IsTrue(rotation.GetDuration().Equals(rotationDays));

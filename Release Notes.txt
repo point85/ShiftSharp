@@ -1,0 +1,7 @@
+						ShiftSharp Release Notes
+								Point85
+							  Kent Randall
+						
+v2.0.0: January 20, 2024
+    - Upgraded v1.0.0 to .NET 8
+	- Published to NuGet

@@ -57,12 +57,7 @@ namespace Point85.ShiftSharp.Schedule
 
 		internal NonWorkingPeriod(string name, string description, LocalDateTime startDateTime, Duration duration) : base(name, description)
 		{
-			if (startDateTime == null)
-			{
-				throw new Exception(WorkSchedule.GetMessage("start.not.defined"));
-			}
-
-			if (duration == null || duration.TotalSeconds == 0)
+			if (duration.TotalSeconds == 0)
 			{
 				throw new Exception(WorkSchedule.GetMessage("duration.not.defined"));
 			}

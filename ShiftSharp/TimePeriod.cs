@@ -57,12 +57,7 @@ namespace Point85.ShiftSharp.Schedule
 		/// <param name="duration">Duration</param>
 		protected TimePeriod(string name, string description, LocalTime startTime, Duration duration) : base(name, description)
 		{
-			if (startTime == null)
-			{
-				throw new Exception(WorkSchedule.GetMessage("start.not.defined"));
-			}
-
-			if (duration == null || duration.TotalSeconds == 0)
+			if  (duration.TotalSeconds == 0)
 			{
 				throw new Exception(WorkSchedule.GetMessage("duration.not.defined"));
 			}
