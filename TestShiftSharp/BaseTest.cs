@@ -28,6 +28,7 @@ using NodaTime;
 using Point85.ShiftSharp.Schedule;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace TestShiftSharp
 {
@@ -46,13 +47,6 @@ namespace TestShiftSharp
 
 		// a work schedule
 		protected WorkSchedule schedule;
-
-		[ClassInitialize()]
-		public static void SetFlags(TestContext context)
-		{
-			testToString = true;
-			testDeletions = true;
-		}
 
 		private void TestShifts(WorkSchedule ws)
 		{
@@ -261,7 +255,7 @@ namespace TestShiftSharp
 			// toString
 			if (testToString)
 			{
-				Console.WriteLine(ws.ToString());
+				Debug.WriteLine(ws.ToString());
 				ws.PrintShiftInstances(instanceReference, instanceReference.PlusDays(rotationDays.Days));
 			}
 
