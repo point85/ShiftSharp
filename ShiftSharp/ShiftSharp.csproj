@@ -13,16 +13,22 @@
     <FileVersion>2.0.0.0</FileVersion>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <Title>Work schedule library</Title>
-    <Version>2.0.0</Version>
+    <Version>2.0.1</Version>
     <PackageProjectUrl>https://github.com/point85/ShiftSharp</PackageProjectUrl>
     <PackageIcon>WorkSchedule.png</PackageIcon>
     <PackageReadmeFile>README.md</PackageReadmeFile>
-    <RepositoryUrl>https://github.com/point85/Shift</RepositoryUrl>
+    <RepositoryUrl>https://github.com/point85/ShiftSharp</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageTags>C#; shift; work schedule; shift calendar; work calendar</PackageTags>
     <PackageReleaseNotes>Upgraded to .NET 8</PackageReleaseNotes>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <ApplicationIcon>WorkSchedule.ico</ApplicationIcon>
+    <Nullable>disable</Nullable>
+    <RunAnalyzersDuringLiveAnalysis>False</RunAnalyzersDuringLiveAnalysis>
   </PropertyGroup>
+  <ItemGroup>
+    <Content Include="WorkSchedule.ico" />
+  </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
   </ItemGroup>

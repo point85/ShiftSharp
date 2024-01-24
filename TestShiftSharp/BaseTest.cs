@@ -251,12 +251,12 @@ namespace TestShiftSharp
 		protected void RunBaseTest(WorkSchedule ws, Duration hoursPerRotation, Duration rotationDays,
 				LocalDate instanceReference)
 		{
-
 			// toString
 			if (testToString)
 			{
 				Debug.WriteLine(ws.ToString());
-				ws.PrintShiftInstances(instanceReference, instanceReference.PlusDays(rotationDays.Days));
+				string instances = ws.BuildShiftInstances(instanceReference, instanceReference.PlusDays(rotationDays.Days));
+				Debug.WriteLine(instances);
 			}
 
 			Assert.IsTrue(ws.Name.Length > 0);

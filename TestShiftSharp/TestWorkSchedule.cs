@@ -447,7 +447,7 @@ namespace TestShiftSharp
 			try
 			{
 				// end before start
-				schedule.PrintShiftInstances(new LocalDate(2017, 1, 2), new LocalDate(2017, 1, 1));
+				schedule.BuildShiftInstances(new LocalDate(2017, 1, 2), new LocalDate(2017, 1, 1));
 				Assert.Fail();
 			}
 			catch (Exception)

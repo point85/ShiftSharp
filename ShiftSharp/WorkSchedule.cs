@@ -25,6 +25,7 @@ SOFTWARE.
 using NodaTime;
 using System;
 using System.Collections.Generic;
+using System.Text;
 
 namespace Point85.ShiftSharp.Schedule
 {
@@ -447,11 +448,11 @@ namespace Point85.ShiftSharp.Schedule
 		}
 
 		/// <summary>
-		/// Print shift instances to the console
+		/// Output shift instances to a string
 		/// </summary>
 		/// <param name="start">Starting date</param>
 		/// <param name="end">Ending date</param>
-		public void PrintShiftInstances(LocalDate start, LocalDate end)
+		public string BuildShiftInstances(LocalDate start, LocalDate end)
 		{
 			if (start.CompareTo(end) > 0)
 			{
@@ -463,27 +464,30 @@ namespace Point85.ShiftSharp.Schedule
 
 			LocalDate day = start;
 
+			StringBuilder sb = new StringBuilder();
+
 			for (long i = 0; i < days; i++)
 			{
-				Console.WriteLine("[" + (i + 1) + "] " + GetMessage("Shifts.day") + ": " + day);
+				sb.Append("[" + (i + 1) + "] " + GetMessage("Shifts.day") + ": " + day).Append('\n');
 
 				List<ShiftInstance> instances = GetShiftInstancesForDay(day);
 
 				if (instances.Count == 0)
 				{
-					Console.WriteLine("   " + GetMessage("Shifts.non.working"));
+					sb.Append("   " + GetMessage("Shifts.non.working")).Append('\n'); ;
 				}
 				else
 				{
 					int count = 1;
 					foreach (ShiftInstance instance in instances)
 					{
-						Console.WriteLine("   (" + count + ")" + instance);
+						sb.Append("   (" + count + ")" + instance).Append('\n'); ;
 						count++;
 					}
 				}
 				day = day.PlusDays(1);
 			}
+			return sb.ToString();
 		}
 
 		/// <summary>
