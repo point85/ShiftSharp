@@ -265,8 +265,12 @@ List<TeamMember> members = sundayDay.AssignedMembers;
 // but is replaced by #10 for that shift instance:
 members = sundayDay.GetMembers(exceptionShift);
 ```
+
+## NuGet
+To download the nuget package, the command is: "dotnet add package ShiftSharp --version 2.1.0".
+
 ## Project Structure
-ShiftSharp depends upon .Net Framework 4.5+ due to use of the NodaTime date and time classes.
+ShiftSharp depends upon .NET 8+ due to use of the NodaTime date and time classes.
 
 ShiftSharp has the following structure:
  * `/Documentation/html` Doxygen HTML files
