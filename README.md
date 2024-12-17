@@ -11,9 +11,22 @@ The diagram below illustrates Business Management Systems' DNO (Day, Night, Off)
 
 A shift is defined with a name, description, starting time of day and duration.  An off-shift period is associated with a shift.  In the example above for Team1, there are two shifts followed by one off-shift period.  Shifts can be overlapped (typically when a handoff of duties is important such as in the nursing profession).  A rotation is a sequence of shifts and off-shift days.  The DNO rotation is Day on, Night on and Night off.  An instance of a shift has a starting date and time of day and has an associated shift definition.
 
+*Break*
+
+A break is a defined working period of time during a shift, for example lunch.  A shift can have zero or more breaks.
+
 *Team*
 
 A team is defined with a name and description.  It has a rotation with a starting date.  The starting date shift will have an instance with that date and a starting time of day as defined by the shift.  The same rotation can be shared between more than one team, but with different starting times.
+
+*Team Member*
+
+A team member is a person assigned to a team.  The member is identified by a member ID (e.g. employee ID), name and description/title.
+
+*Team Member Exception*
+
+A team member exception is an addition and/or removal from the assigned members of a team for a specified shift instance.  The instance is identified by the starting date and time.
+
 
 *Work Schedule*
 
@@ -219,6 +232,39 @@ Working shifts
    (1) Team: Green, Shift: 24 Hour, Start : 2017-02-07T07:00, End : 2017-02-08T07:00
 ```
 
+For a fourth example, for a restaurant shift starting at 7 am on August 8, 2024, team member #1 called in sick and is to be replaced by member #10:
+```cs
+WorkSchedule schedule = new WorkSchedule("Restaurant", "Two shifts");
+
+// day shift (12 hours)
+Shift day = schedule.CreateShift("Day", "Green", new LocalTime(6, 0, 0), Duration.FromHours(12));
+
+// day shift rotation, 1 days ON, 0 OFF
+Rotation dayRotation = schedule.CreateRotation("Day", "One day on, 6 off");
+dayRotation.AddSegment(day, 1, 6);
+
+LocalDate greenStart = new LocalDate(2024, 7, 28);
+Team sundayDay = schedule.CreateTeam("SundayDay", "Sunday day", dayRotation, greenStart);
+
+// chef members
+TeamMember one = new TeamMember("Chef, One", "Chef", "1");
+TeamMember ten = new TeamMember("Ten", "Ten description", "10");
+
+sundayDay.AddMember(one);
+
+// replace member one with ten
+LocalDateTime exceptionShift = new LocalDateTime(2024, 8, 11, 7, 0, 0);
+TeamMemberException replacement = new TeamMemberException(exceptionShift);
+replacement.Removal = one;
+replacement.Addition = ten;
+sundayDay.AddMemberException(replacement);
+
+// #1 is in the assigned list
+List<TeamMember> members = sundayDay.AssignedMembers;
+
+// but is replaced by #10 for that shift instance:
+members = sundayDay.GetMembers(exceptionShift);
+```
 ## Project Structure
 ShiftSharp depends upon .Net Framework 4.5+ due to use of the NodaTime date and time classes.
 

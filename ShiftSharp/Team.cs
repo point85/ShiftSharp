@@ -24,6 +24,9 @@ SOFTWARE.
 
 using NodaTime;
 using System;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Point85.ShiftSharp.Schedule
 {
@@ -46,6 +49,19 @@ namespace Point85.ShiftSharp.Schedule
 		/// shift rotation days
 		/// </summary>
 		public Rotation Rotation { get; set; }
+
+		/// <summary>
+		/// Team members assigned to work regular shifts
+		/// </summary>
+		public List<TeamMember> AssignedMembers { get; private set; } = new List<TeamMember>();
+
+		/// <summary>
+		/// Team member exceptions to regular shifts
+		/// </summary>
+		public List<TeamMemberException> MemberExceptions { get; private set; } = new List<TeamMemberException>();
+
+		// team member exception cache by shift instance start
+		private ConcurrentDictionary<LocalDateTime, TeamMemberException> ExceptionCache;
 
 		/// <summary>
 		/// Constructor
@@ -273,21 +289,136 @@ namespace Point85.ShiftSharp.Schedule
 		public override string ToString()
 		{
 			string rpct = WorkSchedule.GetMessage("rotation.percentage");
-
 			string rs = WorkSchedule.GetMessage("rotation.start");
 			string avg = WorkSchedule.GetMessage("team.hours");
+			string members = WorkSchedule.GetMessage("team.members");
 
 			string text = "";
 			try
 			{
 				text = base.ToString() + ", " + rs + ": " + RotationStart + ", " + Rotation + ", " + rpct + ": "
-						+ GetPercentageWorked().ToString("0.00") + "%" + ", " + avg + ": " + GetHoursWorkedPerWeek();
+						+ GetPercentageWorked().ToString("0.00") + "%" + ", " + avg + ": " + GetHoursWorkedPerWeek() + "\n"
+					+ members;
+
+				foreach (TeamMember member in AssignedMembers)
+				{
+					text += "\n\t" + member;
+				}
 			}
 			catch (Exception)
 			{
 			}
 
 			return text;
+		}
+
+		/// <summary>
+		/// Add a member to this team
+		/// </summary>
+		/// <param name="member">Team member</param>
+		public void AddMember(TeamMember member)
+		{
+			if (!this.AssignedMembers.Contains(member))
+			{
+				this.AssignedMembers.Add(member);
+			}
+		}
+
+		/// <summary>
+		/// Remove a member from this team
+		/// </summary>
+		/// <param name="member">Team member</param>
+		public void removeMember(TeamMember member)
+		{
+			if (this.AssignedMembers.Contains(member))
+			{
+				this.AssignedMembers.Remove(member);
+			}
+		}
+
+		/// <summary>
+		/// True if member is assigned to this team
+		/// </summary>
+		/// <param name="member">Team member</param>
+		/// <returns>bool</returns>
+		public bool HasMember(TeamMember member)
+		{
+			return this.AssignedMembers.Contains(member);
+		}
+
+		/// <summary>
+		/// Add a member exception for this team
+		/// </summary>
+		/// <param name="memberException">Team member exception</param>
+		public void AddMemberException(TeamMemberException memberException)
+		{
+			this.MemberExceptions.Add(memberException);
+
+			// invalidate cache
+			this.ExceptionCache = null;
+		}
+
+		/// <summary>
+		/// Remove a member exception for this team
+		/// </summary>
+		/// <param name="memberException">Team member exception</param>
+		public void RemoveMemberException(TeamMemberException memberException)
+		{
+			this.MemberExceptions.Remove(memberException);
+
+			// invalidate cache
+			this.ExceptionCache = null;
+		}
+
+		/// <summary>
+		/// Build a list of team member for the specified shift start
+		/// </summary>
+		/// <param name="shiftStart">Shift instance starting date and time</param>
+		/// <returns>List of team members</returns>
+
+		public List<TeamMember> GetMembers(LocalDateTime shiftStart)
+		{
+			List<TeamMember> members = new List<TeamMember>();
+
+			// build the cache if not already done
+			BuildMemberCache();
+
+			// members assigned to the team
+			foreach (TeamMember member in AssignedMembers)
+			{
+				members.Add(member);
+			}
+
+			// any exceptions?
+			if (ExceptionCache.TryGetValue(shiftStart, out TeamMemberException tme))
+			{
+				if (tme.Addition != null)
+				{
+					members.Add(tme.Addition);
+				}
+
+				if (tme.Removal!= null)
+				{
+					members.Remove(tme.Removal);
+				}
+			}
+			return members;
+		}
+
+		private void BuildMemberCache()
+		{
+			if (ExceptionCache == null)
+			{
+				// create it
+				ExceptionCache = new ConcurrentDictionary<LocalDateTime, TeamMemberException>();
+			}
+
+			ExceptionCache.Clear();
+
+			foreach (TeamMemberException tme in MemberExceptions)
+			{
+				ExceptionCache[tme.DateTime] = tme;
+			}
 		}
 	}
 }

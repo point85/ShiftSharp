@@ -222,4 +222,10 @@
   <data name="team.hours" xml:space="preserve">
     <value>Average hours worked per week</value>
   </data>
+  <data name="team.members" xml:space="preserve">
+    <value>Members:</value>
+  </data>  
+  <data name="member.id" xml:space="preserve">
+    <value>ID</value>
+  </data>   
 </root>

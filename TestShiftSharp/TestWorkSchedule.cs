@@ -28,6 +28,7 @@ using NodaTime;
 using Point85.ShiftSharp.Schedule;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace TestShiftSharp
 {
@@ -1023,6 +1024,109 @@ namespace TestShiftSharp
 				long n = TimePeriod.DeltaDays(start, next);
 				Assert.IsTrue(n == i);
 			}
+		}
+
+		[TestMethod]
+		public void TestTeamMembers()
+		{
+			schedule = new WorkSchedule("Restaurant", "Two shifts");
+
+			// day shift (12 hours)
+			Shift day = schedule.CreateShift("Day", "Green", new LocalTime(6, 0, 0), Duration.FromHours(12));
+
+			// night shift (3 hours)
+			Shift night = schedule.CreateShift("Night", "Blue", new LocalTime(18, 0, 0), Duration.FromHours(3));
+
+			// day shift rotation, 1 days ON, 0 OFF
+			Rotation dayRotation = schedule.CreateRotation("Day", "One day on, 6 off");
+			dayRotation.AddSegment(day, 1, 6);
+
+			Rotation nightRotation = schedule.CreateRotation("Night", "One day on, 6 off");
+			nightRotation.AddSegment(night, 1, 6);
+
+			// day teams
+			LocalDate greenStart = new LocalDate(2024, 7, 28);
+			Team sundayDay = schedule.CreateTeam("SundayDay", "Sunday day", dayRotation, greenStart);
+			Team mondayDay = schedule.CreateTeam("MondayDay", "Monday day", dayRotation, greenStart.PlusDays(1));
+			Team tuesdayDay = schedule.CreateTeam("TuesdayDay", "Tuesday day", dayRotation, greenStart.PlusDays(2));
+			Team wednesdayDay = schedule.CreateTeam("WednesdayDay", "Wednesday day", dayRotation, greenStart.PlusDays(3));
+			Team thursdayDay = schedule.CreateTeam("ThursdayDay", "Thursday day", dayRotation, greenStart.PlusDays(4));
+			Team fridayDay = schedule.CreateTeam("FridayDay", "Friday day", dayRotation, greenStart.PlusDays(5));
+			Team saturdayDay = schedule.CreateTeam("SaturdayDay", "Saturday day", dayRotation, greenStart.PlusDays(6));
+
+			// night teams
+			LocalDate blueStart = new LocalDate(2024, 7, 29);
+			Team mondayNight = schedule.CreateTeam("MondayNight", "Monday night", nightRotation, blueStart);
+			Team tuesdayNight = schedule.CreateTeam("TuesdayNight", "Tuesday night", nightRotation, blueStart.PlusDays(1));
+			Team wednesdayNight = schedule.CreateTeam("WednesdayNight", "Wednesday night", nightRotation,
+					blueStart.PlusDays(2));
+			Team thursdayNight = schedule.CreateTeam("ThursdayNight", "Thursday night", nightRotation,
+					blueStart.PlusDays(3));
+			Team fridayNight = schedule.CreateTeam("FridayNight", "Friday night", nightRotation, blueStart.PlusDays(4));
+			Team saturdayNight = schedule.CreateTeam("SaturdayNight", "Saturday night", nightRotation,
+					blueStart.PlusDays(5));
+
+			// chef members
+			TeamMember one = new TeamMember("Chef, One", "Chef", "1");
+			TeamMember two = new TeamMember("Chef, Two", "Chef", "2");
+			TeamMember three = new TeamMember("Chef, Three", "Chef", "3");
+			TeamMember four = new TeamMember("Chef, Four", "Chef", "4");
+			TeamMember five = new TeamMember("Chef, Five", "Chef", "5");
+			TeamMember six = new TeamMember("Chef, Six", "Chef", "6");
+			TeamMember seven = new TeamMember("Chef, Seven", "Chef", "7");
+
+			// helper members
+			TeamMember eight = new TeamMember("Helper, One", "Helper", "8");
+			TeamMember nine = new TeamMember("Helper, Two", "Helper", "9");
+
+			// day members
+			sundayDay.AddMember(one);
+			sundayDay.AddMember(two);
+			sundayDay.AddMember(eight);
+			mondayDay.AddMember(one);
+			mondayDay.AddMember(two);
+			mondayDay.AddMember(nine);
+			tuesdayDay.AddMember(three);
+			wednesdayDay.AddMember(four);
+			thursdayDay.AddMember(five);
+			fridayDay.AddMember(six);
+			saturdayDay.AddMember(seven);
+
+			// night members
+			mondayNight.AddMember(four);
+			tuesdayNight.AddMember(five);
+			wednesdayNight.AddMember(six);
+			thursdayNight.AddMember(seven);
+			fridayNight.AddMember(one);
+			saturdayNight.AddMember(two);
+
+			string instances = schedule.BuildShiftInstances(new LocalDate(2024, 8, 4), new LocalDate(2024, 8, 11));
+			Debug.WriteLine(instances);
+
+			Assert.IsTrue(sundayDay.HasMember(two));
+
+			sundayDay.removeMember(two);
+			Assert.IsTrue(!sundayDay.HasMember(two));
+
+			// member exceptions
+			TeamMember ten = new TeamMember("Ten", "Ten description", "10");
+
+			// replace one with ten
+			LocalDateTime exceptionShift = new LocalDateTime(2024, 8, 11, 7, 0, 0);
+			TeamMemberException replacement = new TeamMemberException(exceptionShift);
+			replacement.Removal = one;
+			replacement.Addition = ten;
+			sundayDay.AddMemberException(replacement);
+
+			List<TeamMember> members = sundayDay.AssignedMembers;
+
+			Assert.IsTrue(members.Contains(one));
+			Assert.IsTrue(!members.Contains(ten));
+
+			members = sundayDay.GetMembers(exceptionShift);
+
+			Assert.IsTrue(!members.Contains(one));
+			Assert.IsTrue(members.Contains(ten));
 		}
 	} // class
 } // namespace

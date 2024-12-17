@@ -101,9 +101,15 @@ namespace Point85.ShiftSharp.Schedule
 			string s = WorkSchedule.GetMessage("shift");
 			string ps = WorkSchedule.GetMessage("period.start");
 			string pe = WorkSchedule.GetMessage("period.end");
+			String members = WorkSchedule.GetMessage("team.members");
 
 			string text = " " + t + ": " + Team.Name + ", " + s + ": " + Shift.Name + ", " + ps + ": "
-					+ StartDateTime + ", " + pe + ": " + GetEndTime();
+					+ StartDateTime + ", " + pe + ": " + GetEndTime() +"\n" + members;
+
+			foreach (TeamMember member in this.Team.GetMembers(StartDateTime))
+			{
+				text += "\n\t" + member;
+			}
 			return text;
 		}
 	}
