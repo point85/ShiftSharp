@@ -279,23 +279,18 @@ namespace Point85.ShiftSharp.Schedule
 			}
 
 			// can't be in use
-			foreach (Shift inUseShift in Shifts)
+			foreach (Team team in Teams)
 			{
-				foreach (Team team in Teams)
+				Rotation rotation = team.Rotation;
+				foreach (TimePeriod period in rotation.GetPeriods())
 				{
-					Rotation rotation = team.Rotation;
-
-					foreach (TimePeriod period in rotation.GetPeriods())
+					if (period.Equals(shift))
 					{
-						if (period.Equals(inUseShift))
-						{
-							string msg = String.Format(WorkSchedule.GetMessage("shift.in.use"), shift.Name);
-							throw new Exception(msg);
-						}
+						string msg = String.Format(WorkSchedule.GetMessage("shift.in.use"), shift.Name);
+						throw new Exception(msg);
 					}
 				}
 			}
-
 			Shifts.Remove(shift);
 		}
 
@@ -305,7 +300,7 @@ namespace Point85.ShiftSharp.Schedule
 		/// <param name="name">Name</param>
 		/// <param name="description">Description</param>
 		/// <param name="startDateTime">Starting date and time of day</param>
-		/// <param name="duration">Durtation of period</param>
+		/// <param name="duration">Duration of period</param>
 		/// <returns>NonWorkingPeriod</returns>
 		public NonWorkingPeriod CreateNonWorkingPeriod(string name, string description, LocalDateTime startDateTime,
 				Duration duration)

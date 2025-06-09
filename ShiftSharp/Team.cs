@@ -26,7 +26,6 @@ using NodaTime;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Point85.ShiftSharp.Schedule
 {
@@ -328,7 +327,7 @@ namespace Point85.ShiftSharp.Schedule
 		/// Remove a member from this team
 		/// </summary>
 		/// <param name="member">Team member</param>
-		public void removeMember(TeamMember member)
+		public void RemoveMember(TeamMember member)
 		{
 			if (this.AssignedMembers.Contains(member))
 			{

@@ -8,12 +8,12 @@
     <Description>C# work schedule library</Description>
     <Company>Point85</Company>
     <Product>ShiftSharp</Product>
-    <Copyright>Copyright ©  2017-2024</Copyright>
-    <AssemblyVersion>2.1.0.0</AssemblyVersion>
-    <FileVersion>2.1.0.0</FileVersion>
+    <Copyright>Copyright ©  2017-2025</Copyright>
+    <AssemblyVersion>2.1.1.0</AssemblyVersion>
+    <FileVersion>2.1.1.0</FileVersion>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <Title>Work schedule library</Title>
-    <Version>2.1.0</Version>
+    <Version>2.1.1</Version>
     <Authors>Kent Randall</Authors>
     <PackageId>ShiftSharp</PackageId>
     <PackageProjectUrl>https://github.com/point85/ShiftSharp</PackageProjectUrl>

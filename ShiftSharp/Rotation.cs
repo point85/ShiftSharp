@@ -171,6 +171,8 @@ namespace Point85.ShiftSharp.Schedule
 			RotationSegment segment = new RotationSegment(startingShift, daysOn, daysOff, this);
 			RotationSegments.Add(segment);
 			segment.Sequence = RotationSegments.Count;
+			// invalidate cache
+			periods = null;
 			return segment;
 		}
 

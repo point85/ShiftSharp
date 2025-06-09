@@ -46,7 +46,7 @@ namespace Point85.ShiftSharp.Schedule
 		/// <summary>
 		/// duration of period
 		/// </summary>
-		public Duration Duration;
+		public Duration Duration { get; set; }
 
 		/// <summary>
 		/// Constructor

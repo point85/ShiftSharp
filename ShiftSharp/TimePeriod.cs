@@ -77,7 +77,9 @@ namespace Point85.ShiftSharp.Schedule
 		/// <returns>Period end time</returns>
 		public LocalTime GetEnd()
 		{
-			return StartTime.PlusSeconds((long)Duration.TotalSeconds);
+			long totalSeconds = (long)Duration.TotalSeconds;
+			long secondsInDay = totalSeconds % SECONDS_PER_DAY;
+			return StartTime.PlusSeconds(secondsInDay);
 		}
 
 		/// <summary>
@@ -93,7 +95,7 @@ namespace Point85.ShiftSharp.Schedule
 		/// <returns>Second in day</returns>
 		public static int SecondOfDay(LocalTime time)
 		{
-			return (int)(time.NanosecondOfDay / 1E+09);
+			return (int)(time.NanosecondOfDay / 1_000_000_000L);
 		}
 
 		/// <summary>
