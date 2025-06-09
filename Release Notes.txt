@@ -9,3 +9,12 @@ v2.0.0: January 20, 2024
 v2.1.0: December 17, 2024
 	- Added members for a team and exceptions for assigned personnel	
 	- Published to NuGet
+
+v2.1.1: June 9, 2025	
+	- NonWorkingPeriod:  added getter and setter for Duration
+	- Rotation: invalidated periods cache on AddSegment()
+	- Team: renamed removeMember() to RemoveMember()
+	- TimePeriod: fixed GetEnd()
+	- WorkSchedule: fixed DeleteShift()
+	- removed unused imports
+	- Published to NuGet	

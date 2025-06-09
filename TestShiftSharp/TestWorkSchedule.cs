@@ -1105,7 +1105,7 @@ namespace TestShiftSharp
 
 			Assert.IsTrue(sundayDay.HasMember(two));
 
-			sundayDay.removeMember(two);
+			sundayDay.RemoveMember(two);
 			Assert.IsTrue(!sundayDay.HasMember(two));
 
 			// member exceptions

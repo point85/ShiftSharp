@@ -267,7 +267,7 @@ members = sundayDay.GetMembers(exceptionShift);
 ```
 
 ## NuGet
-To download the nuget package, the command is: "dotnet add package ShiftSharp --version 2.1.0".
+To download the nuget package, the command is: "dotnet add package ShiftSharp --version 2.1.1".
 
 ## Project Structure
 ShiftSharp depends upon .NET 8+ due to use of the NodaTime date and time classes.
