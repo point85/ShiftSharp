@@ -60,6 +60,11 @@ namespace Point85.ShiftSharp.Schedule
 		/// <param name="breakPeriod">Break</param>
 		public void AddBreak(Break breakPeriod)
 		{
+			if (breakPeriod == null)
+			{
+				throw new ArgumentNullException(nameof(breakPeriod));
+			}
+			
 			if (!this.Breaks.Contains(breakPeriod))
 			{
 				this.Breaks.Add(breakPeriod);
@@ -72,7 +77,7 @@ namespace Point85.ShiftSharp.Schedule
 		/// <param name="breakPeriod">Break</param>
 		public void RemoveBreak(Break breakPeriod)
 		{
-			if (this.Breaks.Contains(breakPeriod))
+			if (breakPeriod != null)
 			{
 				this.Breaks.Remove(breakPeriod);
 			}
@@ -93,11 +98,13 @@ namespace Point85.ShiftSharp.Schedule
 			return period;
 		}
 
+		private const long NANOSECONDS_ROUNDING_THRESHOLD = 500_000_000L;
+
 		private int ToRoundedSecond(LocalTime time)
 		{
 			int second = SecondOfDay(time);
 
-			if (time.NanosecondOfSecond > 500E+06)
+			if (time.NanosecondOfSecond > NANOSECONDS_ROUNDING_THRESHOLD)
 			{
 				second++;
 			}

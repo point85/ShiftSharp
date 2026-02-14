@@ -17,4 +17,23 @@ v2.1.1: June 9, 2025
 	- TimePeriod: fixed GetEnd()
 	- WorkSchedule: fixed DeleteShift()
 	- removed unused imports
-	- Published to NuGet	
+	- Published to NuGet
+
+v2.2.0: February 14, 2026
+	- Claude Sonnet 4.5
+Performance Improvements:
+Team.cs - Fixed BuildMemberCache() to only build once instead of clearing and rebuilding repeatedly
+String concatenation in loops - Converted to StringBuilder in:
+Team.ToString()
+WorkSchedule.ToString()
+Rotation.ToString()
+[Multiple files] - Removed inefficient Contains() + Add/Remove patterns that searched lists twice
+Bug Fixes:
+Team.cs:113-136 - Fixed integer overflow risk in GetDayInRotation() with proper bounds checking
+TeamMember.cs:86-94 - Fixed null reference in GetHashCode() for Name property
+Named.cs:67-71 - Fixed null reference in GetHashCode() using null-conditional operator
+Shift.cs:89-99 - Replaced magic number 500E+06 with named constant NANOSECONDS_ROUNDING_THRESHOLD
+Rotation.cs:160 - Changed generic Exception to ArgumentNullException for better exception handling
+Code Quality:
+[Multiple ToString() methods] - Improved error handling to return partial results instead of empty strings when formatting fails
+Shift.cs, Team.cs, WorkSchedule.cs - Added null parameter validation with ArgumentNullException	

@@ -92,7 +92,7 @@ namespace Point85.ShiftSharp.Schedule
 			unchecked 
 			{
 				int hash = 17;
-				hash = hash * 23 + Name.GetHashCode();
+				hash = hash * 23 + (Name != null ? Name.GetHashCode() : 0);
 				hash = hash * 23 + (MemberID != null ? MemberID.GetHashCode() : 0);
 				return hash;
 			}
@@ -104,18 +104,16 @@ namespace Point85.ShiftSharp.Schedule
 		/// <returns>String</returns>
 		public override string ToString()
 		{
-			string id = WorkSchedule.GetMessage("member.id");
-
-			string text = "";
-
 			try
 			{
-				text = base.ToString() + ", " + id + ": " + MemberID;
+				string id = WorkSchedule.GetMessage("member.id");
+				return base.ToString() + ", " + id + ": " + MemberID;
 			}
 			catch (Exception)
 			{
+				// Return partial information if formatting fails
+				return base.ToString();
 			}
-			return text;
 		}
 	}
 }

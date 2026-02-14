@@ -116,19 +116,19 @@ namespace Point85.ShiftSharp.Schedule
 		/// <returns>String</returns>
 		public override string ToString()
 		{
-			string text = "";
-			string start = WorkSchedule.GetMessage("period.start");
-			string end = WorkSchedule.GetMessage("period.end");
-
 			try
 			{
-				text = base.ToString() + ", " + start + ": " + StartTime + " (" + Duration + ")" + ", " + end + ": "
+				string start = WorkSchedule.GetMessage("period.start");
+				string end = WorkSchedule.GetMessage("period.end");
+
+				return base.ToString() + ", " + start + ": " + StartTime + " (" + Duration + ")" + ", " + end + ": "
 						+ GetEnd();
 			}
 			catch (Exception)
 			{
+				// Return partial information if formatting fails
+				return base.ToString();
 			}
-			return text;
 		}
 	}
 }

@@ -78,7 +78,7 @@ namespace Point85.ShiftSharp.Schedule
 		/// <returns>Hash code</returns>
 		public override int GetHashCode()
 		{
-			return Name.GetHashCode();
+			return Name?.GetHashCode() ?? 0;
 		}
 
 		/// <summary>

@@ -9,11 +9,11 @@
     <Company>Point85</Company>
     <Product>ShiftSharp</Product>
     <Copyright>Copyright ©  2017-2025</Copyright>
-    <AssemblyVersion>2.1.1.0</AssemblyVersion>
-    <FileVersion>2.1.1.0</FileVersion>
+    <AssemblyVersion>2.2.0.0</AssemblyVersion>
+    <FileVersion>2.2.0.0</FileVersion>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <Title>Work schedule library</Title>
-    <Version>2.1.1</Version>
+    <Version>2.2.0</Version>
     <Authors>Kent Randall</Authors>
     <PackageId>ShiftSharp</PackageId>
     <PackageProjectUrl>https://github.com/point85/ShiftSharp</PackageProjectUrl>
@@ -50,9 +50,9 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
-    <PackageReference Include="NodaTime" Version="3.1.10" />
+    <PackageReference Include="NodaTime" Version="3.2.2" />
     <PackageReference Include="System.Data.DataSetExtensions" Version="4.5.0" />
-    <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="6.0.0" />
+    <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="6.1.2" />
   </ItemGroup>
   <ItemGroup>
     <Compile Update="Properties\Resources.Designer.cs">

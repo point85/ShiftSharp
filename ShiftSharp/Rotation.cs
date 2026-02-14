@@ -25,6 +25,7 @@ SOFTWARE.
 using NodaTime;
 using System;
 using System.Collections.Generic;
+using System.Text;
 
 namespace Point85.ShiftSharp.Schedule
 {
@@ -166,7 +167,7 @@ namespace Point85.ShiftSharp.Schedule
 		{
 			if (startingShift == null)
 			{
-				throw new Exception("The starting shift must be specified.");
+				throw new ArgumentNullException(nameof(startingShift), "The starting shift must be specified.");
 			}
 			RotationSegment segment = new RotationSegment(startingShift, daysOn, daysOff, this);
 			RotationSegments.Add(segment);
@@ -200,23 +201,21 @@ namespace Point85.ShiftSharp.Schedule
 			string on = WorkSchedule.GetMessage("rotation.on");
 			string off = WorkSchedule.GetMessage("rotation.off");
 
-			string periodsString = "";
+			StringBuilder periodsBuilder = new StringBuilder();
 
 			foreach (TimePeriod period in GetPeriods())
 			{
-				if (periodsString.Length > 0)
+				if (periodsBuilder.Length > 0)
 				{
-					periodsString += ", ";
+					periodsBuilder.Append(", ");
 				}
 
 				string onOff = period.IsWorkingPeriod() ? on : off;
-				periodsString += period.Name + " (" + onOff + ")";
+				periodsBuilder.Append(period.Name).Append(" (").Append(onOff).Append(")");
 			}
 
-			string text = named + "\n" + rper + ": [" + periodsString + "], " + rd + ": " + GetDuration() + ", " + rda
+			return named + "\n" + rper + ": [" + periodsBuilder.ToString() + "], " + rd + ": " + GetDuration() + ", " + rda
 					+ ": " + GetDuration().Days + ", " + rw + ": " + GetWorkingTime();
-
-			return text;
 		}
 	}
 }

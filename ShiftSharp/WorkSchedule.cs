@@ -89,7 +89,7 @@ namespace Point85.ShiftSharp.Schedule
 		/// <param name="team">Team</param>
 		public void DeleteTeam(Team team)
 		{
-			if (Teams.Contains(team))
+			if (team != null)
 			{
 				Teams.Remove(team);
 			}
@@ -101,7 +101,7 @@ namespace Point85.ShiftSharp.Schedule
 		/// <param name="period">Non-working period</param>
 		public void DeleteNonWorkingPeriod(NonWorkingPeriod period)
 		{
-			if (this.NonWorkingPeriods.Contains(period))
+			if (period != null)
 			{
 				this.NonWorkingPeriods.Remove(period);
 			}
@@ -491,65 +491,67 @@ namespace Point85.ShiftSharp.Schedule
 		/// <returns>String</returns>
 		public override string ToString()
 		{
-			string sch = GetMessage("schedule");
-			string rd = GetMessage("rotation.duration");
-			string sw = GetMessage("schedule.working");
-			string sf = GetMessage("schedule.Shifts");
-			string st = GetMessage("schedule.teams");
-			string sc = GetMessage("schedule.coverage");
-			string sn = GetMessage("schedule.non");
-			string stn = GetMessage("schedule.total");
-
-			string text = sch + ": " + base.ToString();
 			try
 			{
-				text += "\n" + rd + ": " + GetRotationDuration() + ", " + sw + ": " + GetRotationWorkingTime();
+				string sch = GetMessage("schedule");
+				string rd = GetMessage("rotation.duration");
+				string sw = GetMessage("schedule.working");
+				string sf = GetMessage("schedule.Shifts");
+				string st = GetMessage("schedule.teams");
+				string sc = GetMessage("schedule.coverage");
+				string sn = GetMessage("schedule.non");
+				string stn = GetMessage("schedule.total");
+
+				StringBuilder sb = new StringBuilder();
+				sb.Append(sch).Append(": ").Append(base.ToString());
+				sb.Append("\n").Append(rd).Append(": ").Append(GetRotationDuration())
+					.Append(", ").Append(sw).Append(": ").Append(GetRotationWorkingTime());
 
 				// Shifts
-				text += "\n" + sf + ": ";
+				sb.Append("\n").Append(sf).Append(": ");
 				int count = 1;
 				foreach (Shift shift in Shifts)
 				{
-					text += "\n   (" + count + ") " + shift;
+					sb.Append("\n   (").Append(count).Append(") ").Append(shift);
 					count++;
 				}
 
 				// teams
-				text += "\n" + st + ": ";
+				sb.Append("\n").Append(st).Append(": ");
 				count = 1;
 				float teamPercent = 0.0f;
 				foreach (Team team in Teams)
 				{
-					text += "\n   (" + count + ") " + team;
+					sb.Append("\n   (").Append(count).Append(") ").Append(team);
 					teamPercent += team.GetPercentageWorked();
 					count++;
 				}
-				text += "\n" + sc + ": " + teamPercent.ToString("0.00") + "%";
+				sb.Append("\n").Append(sc).Append(": ").Append(teamPercent.ToString("0.00")).Append("%");
 
 				// non-working periods
-				List<NonWorkingPeriod> periods = NonWorkingPeriods;
-
-				if (periods.Count > 0)
+				if (NonWorkingPeriods.Count > 0)
 				{
-					text += "\n" + sn + ":";
+					sb.Append("\n").Append(sn).Append(":");
 
 					Duration totalMinutes = Duration.Zero;
 
 					count = 1;
-					foreach (NonWorkingPeriod period in periods)
+					foreach (NonWorkingPeriod period in NonWorkingPeriods)
 					{
 						totalMinutes = totalMinutes.Plus(period.Duration);
-						text += "\n   (" + count + ") " + period;
+						sb.Append("\n   (").Append(count).Append(") ").Append(period);
 						count++;
 					}
-					text += "\n" + stn + ": " + totalMinutes.Minutes;
+					sb.Append("\n").Append(stn).Append(": ").Append(totalMinutes.Minutes);
 				}
+				
+				return sb.ToString();
 			}
 			catch (Exception)
 			{
+				// Return partial information if formatting fails
+				return base.ToString();
 			}
-
-			return text;
 		}
 	}
 }

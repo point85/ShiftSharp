@@ -26,6 +26,7 @@ using NodaTime;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Text;
 
 namespace Point85.ShiftSharp.Schedule
 {
@@ -121,8 +122,16 @@ namespace Point85.ShiftSharp.Schedule
 				throw new Exception(msg);
 			}
 
-			int dayInRotation = (int)(deltaDays % Rotation.GetDuration().Days) + 1;
-			return dayInRotation;
+			long rotationDays = Rotation.GetDuration().Days;
+			long dayInRotation = (deltaDays % rotationDays) + 1;
+			
+			// Safety check for int conversion
+			if (dayInRotation > int.MaxValue)
+			{
+				throw new Exception("Day in rotation exceeds maximum value");
+			}
+			
+			return (int)dayInRotation;
 		}
 
 		/// <summary>
@@ -287,36 +296,46 @@ namespace Point85.ShiftSharp.Schedule
 		/// <returns>String</returns>
 		public override string ToString()
 		{
+		try
+		{
 			string rpct = WorkSchedule.GetMessage("rotation.percentage");
 			string rs = WorkSchedule.GetMessage("rotation.start");
 			string avg = WorkSchedule.GetMessage("team.hours");
 			string members = WorkSchedule.GetMessage("team.members");
 
-			string text = "";
-			try
-			{
-				text = base.ToString() + ", " + rs + ": " + RotationStart + ", " + Rotation + ", " + rpct + ": "
-						+ GetPercentageWorked().ToString("0.00") + "%" + ", " + avg + ": " + GetHoursWorkedPerWeek() + "\n"
-					+ members;
+			StringBuilder sb = new StringBuilder();
+			sb.Append(base.ToString())
+				.Append(", ").Append(rs).Append(": ").Append(RotationStart)
+				.Append(", ").Append(Rotation)
+				.Append(", ").Append(rpct).Append(": ").Append(GetPercentageWorked().ToString("0.00")).Append("%")
+				.Append(", ").Append(avg).Append(": ").Append(GetHoursWorkedPerWeek())
+				.Append("\n").Append(members);
 
-				foreach (TeamMember member in AssignedMembers)
-				{
-					text += "\n\t" + member;
-				}
-			}
-			catch (Exception)
+			foreach (TeamMember member in AssignedMembers)
 			{
+				sb.Append("\n\t").Append(member);
 			}
-
-			return text;
+			
+			return sb.ToString();
 		}
-
-		/// <summary>
-		/// Add a member to this team
-		/// </summary>
-		/// <param name="member">Team member</param>
-		public void AddMember(TeamMember member)
+		catch (Exception)
 		{
+			// Return partial information if formatting fails
+			return base.ToString();
+		}
+	}
+
+	/// <summary>
+	/// Add a member to this team
+	/// </summary>
+	/// <param name="member">Team member</param>
+	public void AddMember(TeamMember member)
+		{
+			if (member == null)
+			{
+				throw new ArgumentNullException(nameof(member));
+			}
+			
 			if (!this.AssignedMembers.Contains(member))
 			{
 				this.AssignedMembers.Add(member);
@@ -329,7 +348,7 @@ namespace Point85.ShiftSharp.Schedule
 		/// <param name="member">Team member</param>
 		public void RemoveMember(TeamMember member)
 		{
-			if (this.AssignedMembers.Contains(member))
+			if (member != null)
 			{
 				this.AssignedMembers.Remove(member);
 			}
@@ -406,13 +425,14 @@ namespace Point85.ShiftSharp.Schedule
 
 		private void BuildMemberCache()
 		{
-			if (ExceptionCache == null)
+			if (ExceptionCache != null)
 			{
-				// create it
-				ExceptionCache = new ConcurrentDictionary<LocalDateTime, TeamMemberException>();
+				// already built
+				return;
 			}
 
-			ExceptionCache.Clear();
+			// create and populate
+			ExceptionCache = new ConcurrentDictionary<LocalDateTime, TeamMemberException>();
 
 			foreach (TeamMemberException tme in MemberExceptions)
 			{
